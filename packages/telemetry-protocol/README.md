@@ -23,6 +23,7 @@ if (result.ok) {
 
 ## Tests
 
+- Packets captured from the game ([`test/fixtures`](test/fixtures)) pin down behaviour the documentation leaves open: units, gear encoding, all-zero packets outside of driving, lap fields at a lap boundary.
 - Offsets are checked against values written out by hand from the documentation, independently of the field table.
 - Every field round-trips through `encodePacket` and `decodePacket` with a distinct non-zero value, so a field read from the wrong offset cannot pass.
 - Views into larger buffers decode correctly; Node's `Buffer` is often such a view.

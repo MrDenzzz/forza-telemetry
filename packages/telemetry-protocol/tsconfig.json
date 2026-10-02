@@ -1,4 +1,9 @@
 {
   "extends": "@ft/tsconfig/library.json",
+  "compilerOptions": {
+    // Tests read captured packets with node:fs; tsconfig.build.json removes Node types again,
+    // so the build fails if library code uses them.
+    "types": ["node"]
+  },
   "include": ["src", "test"]
 }
