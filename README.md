@@ -27,7 +27,7 @@ pnpm check
 
 | Script           | What it does                                    |
 | ---------------- | ----------------------------------------------- |
-| `pnpm dev`       | Run the API in watch mode                       |
+| `pnpm dev`       | Run the API and the dashboard in watch mode     |
 | `pnpm check`     | Lint, typecheck, test and build every workspace |
 | `pnpm lint`      | ESLint with type-aware rules                    |
 | `pnpm typecheck` | TypeScript in every workspace                   |
@@ -43,14 +43,14 @@ Commits follow [Conventional Commits](https://www.conventionalcommits.org/); a g
 
 In Forza Horizon 6 open Settings → HUD and Gameplay and set **Data Out** to On, **Data Out IP Address** to `127.0.0.1` and **Data Out IP Port** to `9876`. Microsoft Store and PC Game Pass builds also need a [loopback exemption](docs/fh6-data-out.md#network-setup-on-windows).
 
-## Running the API
+## Running locally
 
 ```sh
-pnpm dev                                          # API on http://localhost:4000, telemetry on UDP 9876
+pnpm dev                                          # dashboard on http://localhost:3000, API on :4000, telemetry on UDP 9876
 pnpm replay recordings/<file>.ftr.gz --loop       # without the game: replay a recording into it
 ```
 
-Live data streams over WebSocket at `ws://localhost:4000/live`; `GET /health` reports whether the game is sending. Configuration and endpoints: [apps/api](apps/api/README.md).
+The dashboard follows the game live. The API streams over WebSocket at `ws://localhost:4000/live` and reports on `GET /health` whether the game is sending. Details: [dashboard](apps/web/README.md), [API](apps/api/README.md).
 
 ## Recording and replaying
 
@@ -75,7 +75,7 @@ Every document has a Russian translation (`*.ru.md`) linked at its top.
 - [x] Monorepo foundation: workspaces, shared configs, CI
 - [x] Packet parser, recorder and replayer
 - [x] API: UDP ingest and live WebSocket stream
-- [ ] Web: live dashboard
+- [x] Web: live dashboard
 - [ ] Sessions, laps, history and lap comparison
 - [ ] Mobile: live gauges
 - [ ] Docker, deployment, demo mode

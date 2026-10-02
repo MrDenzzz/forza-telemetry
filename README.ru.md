@@ -27,7 +27,7 @@ pnpm check
 
 | Скрипт           | Что делает                                        |
 | ---------------- | ------------------------------------------------- |
-| `pnpm dev`       | Запуск API в режиме watch                         |
+| `pnpm dev`       | Запуск API и дашборда в режиме watch              |
 | `pnpm check`     | Линт, проверка типов, тесты и сборка всех пакетов |
 | `pnpm lint`      | ESLint с правилами, использующими типы            |
 | `pnpm typecheck` | Проверка типов TypeScript во всех пакетах         |
@@ -43,14 +43,14 @@ pnpm check
 
 В Forza Horizon 6 откройте Settings → HUD and Gameplay и установите **Data Out** в On, **Data Out IP Address** — `127.0.0.1`, **Data Out IP Port** — `9876`. Версиям из Microsoft Store и PC Game Pass также нужно [исключение для loopback](docs/fh6-data-out.ru.md#настройка-сети-в-windows).
 
-## Запуск API
+## Локальный запуск
 
 ```sh
-pnpm dev                                          # API на http://localhost:4000, телеметрия на UDP 9876
+pnpm dev                                          # дашборд на http://localhost:3000, API на :4000, телеметрия на UDP 9876
 pnpm replay recordings/<файл>.ftr.gz --loop       # без игры: проиграть в него запись
 ```
 
-Live-данные идут по WebSocket на `ws://localhost:4000/live`; `GET /health` показывает, присылает ли игра данные. Конфигурация и точки входа: [apps/api](apps/api/README.ru.md).
+Дашборд показывает игру в реальном времени. API отдаёт поток по WebSocket на `ws://localhost:4000/live` и сообщает на `GET /health`, присылает ли игра данные. Подробнее: [дашборд](apps/web/README.ru.md), [API](apps/api/README.ru.md).
 
 ## Запись и воспроизведение
 
@@ -75,7 +75,7 @@ pnpm replay recordings/fh6-<timestamp>.ftr.gz --loop
 - [x] Основа монорепо: workspaces, общие конфиги, CI
 - [x] Парсер пакета, recorder и replayer
 - [x] API: приём UDP и live-поток по WebSocket
-- [ ] Web: live-дашборд
+- [x] Web: live-дашборд
 - [ ] Сессии, круги, история и сравнение кругов
 - [ ] Mobile: live-приборы
 - [ ] Docker, деплой, демо-режим
