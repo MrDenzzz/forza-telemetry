@@ -4,10 +4,12 @@
 
 Shared TypeScript configurations.
 
-| Config         | Use for                                                                                                                                        |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `library.json` | Platform-agnostic packages consumed by Node, browsers and React Native. No ambient Node or DOM types, so `Buffer` or `window` fail to compile. |
-| `node.json`    | Node.js services and CLIs (`@types/node` included).                                                                                            |
+| Config             | Use for                                                                                                                                        |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `library.json`     | Platform-agnostic packages consumed by Node, browsers and React Native. No ambient Node or DOM types, so `Buffer` or `window` fail to compile. |
+| `node.json`        | Node.js services and CLIs (`@types/node` included).                                                                                            |
+| `dom-library.json` | Libraries for browsers and React Native that use DOM types or JSX.                                                                             |
+| `next.json`        | Next.js applications: bundler resolution, JSX preserved for Next, no emit.                                                                     |
 
 `base.json` is strict beyond `strict: true` (`exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, …) and is not meant to be extended directly. `erasableSyntaxOnly` rules out enums, namespaces and parameter properties, so sources run under Node's built-in type stripping without a build step.
 

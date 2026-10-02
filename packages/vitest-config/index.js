@@ -1,5 +1,5 @@
 // @ts-check
-import { defaultServerConditions } from 'vite';
+import { defaultClientConditions, defaultServerConditions } from 'vite';
 import { defineConfig } from 'vitest/config';
 
 /**
@@ -16,5 +16,24 @@ export const node = defineConfig({
   test: {
     environment: 'node',
     include: ['test/**/*.test.ts'],
+  },
+});
+
+/**
+ * Tests for browser code in a simulated DOM. Code under a DOM environment is resolved with
+ * client conditions, so the source condition is added there as well.
+ */
+export const web = defineConfig({
+  resolve: {
+    conditions: ['@ft/source', ...defaultClientConditions],
+  },
+  ssr: {
+    resolve: {
+      conditions: ['@ft/source', ...defaultServerConditions],
+    },
+  },
+  test: {
+    environment: 'happy-dom',
+    include: ['test/**/*.test.{ts,tsx}'],
   },
 });

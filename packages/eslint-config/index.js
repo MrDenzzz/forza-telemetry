@@ -1,7 +1,9 @@
 // @ts-check
+import eslintReact from '@eslint-react/eslint-plugin';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier/flat';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -72,5 +74,21 @@ export function cli(tsconfigRootDir) {
     rules: {
       'no-console': 'off',
     },
+  });
+}
+
+/**
+ * React for the web and React Native. Uses @eslint-react rather than eslint-plugin-react,
+ * which does not support ESLint 10.
+ *
+ * @param {string} tsconfigRootDir Directory of the consuming package, usually `import.meta.dirname`.
+ */
+export function react(tsconfigRootDir) {
+  return defineConfig(base(tsconfigRootDir), {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      eslintReact.configs['recommended-type-checked'],
+      reactHooks.configs.flat['recommended-latest'],
+    ],
   });
 }

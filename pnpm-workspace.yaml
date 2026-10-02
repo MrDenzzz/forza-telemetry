@@ -6,7 +6,11 @@ packages:
 # Shared versions for dependencies used by more than one workspace.
 catalog:
   '@types/node': ^24.0.0
+  '@types/react': ^19.3.0
+  '@types/react-dom': ^19.3.0
   eslint: ^10.11.0
+  react: ^19.3.0
+  react-dom: ^19.3.0
   # typescript-eslint supports TypeScript <6.1; TypeScript does not follow semver.
   typescript: ~6.0.3
   vite: ^8.3.0
