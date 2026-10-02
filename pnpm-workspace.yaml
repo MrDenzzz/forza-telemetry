@@ -7,3 +7,8 @@ packages:
 catalog:
   # typescript-eslint supports TypeScript <6.1; TypeScript does not follow semver.
   typescript: ~6.0.3
+
+# Dependency install scripts are opt-in (strictDepBuilds is on by default since pnpm 11).
+allowBuilds:
+  # Its postinstall only installs git hooks; the root `prepare` script does that explicitly.
+  lefthook: false
