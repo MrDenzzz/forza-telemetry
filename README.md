@@ -48,6 +48,10 @@ Commits follow [Conventional Commits](https://www.conventionalcommits.org/); a g
 - [ ] Mobile: live gauges
 - [ ] Docker, deployment, demo mode
 
+## License
+
+[MIT](LICENSE)
+
 ---
 
 Not affiliated with or endorsed by Microsoft, Xbox Game Studios or Playground Games. Forza Horizon is a trademark of Microsoft Corporation.
