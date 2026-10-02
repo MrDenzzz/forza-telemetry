@@ -18,3 +18,12 @@ export {
   type TelemetryPacket,
 } from './layout.ts';
 export { DEFAULT_TELEMETRY_PORT, RESERVED_PORTS, isReservedPort } from './ports.ts';
+export {
+  CAR_CLASSES,
+  DRIVETRAINS,
+  carClassOf,
+  drivetrainOf,
+  gearOf,
+  type CarClass,
+  type Drivetrain,
+} from './semantics.ts';

@@ -19,6 +19,7 @@ if (result.ok) {
 | `TelemetryPacket`                                              | One number per documented field, named as in the official documentation (camelCase), in wire units and encodings: speed in m/s, `isRaceOn` as 0 or 1. Interpreting values is up to consumers. |
 | `PACKET_FIELDS`                                                | The field table in wire order. It mirrors the official list line by line; offsets (`FIELD_OFFSETS`, `PACKET_LAYOUT`) are derived from it.                                                     |
 | `encodePacket(fields)`                                         | Builds a datagram; omitted fields are zero. For tests and simulators.                                                                                                                         |
+| `carClassOf()`, `drivetrainOf()`, `gearOf()`                   | Meaning of coded fields: FH6 class letters, FWD/RWD/AWD, and gears as −1 for reverse, 0 for neutral, 1… forward.                                                                              |
 | `DEFAULT_TELEMETRY_PORT`, `RESERVED_PORTS`, `isReservedPort()` | The project's default port and the range the game binds itself (5200–5300).                                                                                                                   |
 
 ## Tests
