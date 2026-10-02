@@ -9,7 +9,7 @@
 | `library.json` | Платформенно-независимые пакеты, которые используют Node, браузеры и React Native. Глобальных типов Node и DOM нет, поэтому `Buffer` или `window` не скомпилируются. |
 | `node.json`    | Сервисы и CLI на Node.js (с `@types/node`).                                                                                                                          |
 
-`base.json` строже, чем просто `strict: true` (`exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, …), и не предназначен для прямого наследования.
+`base.json` строже, чем просто `strict: true` (`exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, …), и не предназначен для прямого наследования. `erasableSyntaxOnly` запрещает enum, namespace и parameter properties, поэтому исходники запускаются встроенным в Node удалением типов без шага сборки.
 
 ## Разрешение внутренних пакетов
 
