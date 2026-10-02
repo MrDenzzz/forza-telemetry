@@ -4,6 +4,8 @@ import type { NextConfig } from 'next';
 // conditions, and Turborepo builds the packages before `next dev` and `next build`.
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // No generated AGENTS.md or CLAUDE.md when an AI tool runs `next dev`.
+  agentRules: false,
 };
 
 export default nextConfig;
