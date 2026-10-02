@@ -1,5 +1,7 @@
 # Forza Telemetry
 
+**English** · [Русский](README.ru.md)
+
 Real-time telemetry for Forza Horizon 6. A NestJS service ingests the game's UDP "Data Out" stream, detects sessions and laps, stores lap analytics in Postgres, and streams live data to a Next.js dashboard and a React Native gauge cluster.
 
 > Work in progress: the project is built step by step, see the [roadmap](#roadmap).
@@ -34,6 +36,8 @@ pnpm check
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/); a git hook installed by `pnpm install` checks messages and formats staged files.
 
 ## Documentation
+
+Every document has a Russian translation (`*.ru.md`) linked at its top.
 
 - [Forza Horizon 6 "Data Out" reference](docs/fh6-data-out.md): packet layout, sources, open questions, network setup
 - [Architecture decision records](docs/adr/README.md)

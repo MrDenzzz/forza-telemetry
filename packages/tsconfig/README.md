@@ -1,5 +1,7 @@
 # @ft/tsconfig
 
+**English** · [Русский](README.ru.md)
+
 Shared TypeScript configurations.
 
 | Config         | Use for                                                                                                                                        |

@@ -1,5 +1,7 @@
 # 0001. Monorepo on pnpm workspaces and Turborepo
 
+**English** · [Русский](0001-monorepo-pnpm-turborepo.ru.md)
+
 - Status: Accepted
 - Date: 2026-10-02
 

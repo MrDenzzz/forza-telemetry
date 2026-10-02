@@ -1,5 +1,7 @@
 # @ft/eslint-config
 
+**English** · [Русский](README.ru.md)
+
 Shared ESLint flat configs: `typescript-eslint` strict + stylistic type-checked rules, with formatting left to Prettier.
 
 ```js
