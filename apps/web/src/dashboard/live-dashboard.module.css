@@ -1,0 +1,74 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas:
+    'speed inputs gforce'
+    'charts charts tires'
+    'race race engine';
+  gap: var(--gap);
+  transition: opacity 200ms ease;
+}
+
+.grid[data-live='false'] {
+  opacity: 0.45;
+}
+
+.speed {
+  grid-area: speed;
+}
+
+.inputs {
+  grid-area: inputs;
+}
+
+.gforce {
+  grid-area: gforce;
+}
+
+.charts {
+  grid-area: charts;
+}
+
+.tires {
+  grid-area: tires;
+}
+
+.race {
+  grid-area: race;
+}
+
+.engine {
+  grid-area: engine;
+}
+
+.grid > div {
+  display: flex;
+  min-width: 0;
+}
+
+.grid > div > section {
+  flex: 1;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'speed'
+      'inputs'
+      'gforce'
+      'tires'
+      'charts'
+      'race'
+      'engine';
+  }
+}

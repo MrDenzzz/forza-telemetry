@@ -1,0 +1,86 @@
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap) 24px;
+}
+
+.title {
+  font-size: 1.1rem;
+}
+
+.status {
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.85rem;
+}
+
+.status[data-tone='ok'] {
+  color: var(--color-ok);
+}
+
+.status[data-tone='warning'] {
+  color: var(--color-warning);
+}
+
+.status[data-tone='error'] {
+  color: var(--color-error);
+}
+
+.status[data-tone='muted'] {
+  color: var(--color-muted);
+}
+
+.car {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  font-size: 0.9rem;
+}
+
+.classBadge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #0b0d10;
+  background: var(--color-muted);
+}
+
+.classBadge[data-class='D'] {
+  background: #64b5f6;
+}
+
+.classBadge[data-class='C'] {
+  background: #ffd54f;
+}
+
+.classBadge[data-class='B'] {
+  background: #ff9f43;
+}
+
+.classBadge[data-class='A'] {
+  background: #ff6b6b;
+}
+
+.classBadge[data-class='S1'] {
+  background: #b388ff;
+}
+
+.classBadge[data-class='S2'] {
+  background: #4c8dff;
+}
+
+.classBadge[data-class='R'] {
+  background: #ff4d8d;
+}
+
+.classBadge[data-class='X'] {
+  background: #3ddc84;
+}
+
+.ordinal {
+  color: var(--color-muted);
+}

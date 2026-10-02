@@ -1,0 +1,22 @@
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+}
+
+.chart figcaption {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.plot {
+  width: 100%;
+  min-height: 180px;
+}
+
+.plot :global(.u-legend) {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}

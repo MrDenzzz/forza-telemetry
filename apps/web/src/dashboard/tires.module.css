@@ -1,0 +1,68 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap);
+}
+
+.tire {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--color-bg);
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.temperature {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.temperature[data-tone='cold'] {
+  color: var(--color-cold);
+}
+
+.temperature[data-tone='optimal'] {
+  color: var(--color-optimal);
+}
+
+.temperature[data-tone='hot'] {
+  color: var(--color-hot);
+}
+
+.gripTrack {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-panel-border);
+}
+
+.gripFill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+}
+
+.gripFill[data-tone='grip'] {
+  background: var(--color-grip);
+}
+
+.gripFill[data-tone='limit'] {
+  background: var(--color-limit);
+}
+
+.gripFill[data-tone='sliding'] {
+  background: var(--color-sliding);
+}
+
+.note {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}

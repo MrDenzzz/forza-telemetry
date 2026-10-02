@@ -1,0 +1,66 @@
+.pedals {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+}
+
+.pedal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  max-width: 44px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--color-panel-border);
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: bottom center;
+}
+
+.fill[data-pedal='throttle'] {
+  background: var(--color-throttle);
+}
+
+.fill[data-pedal='brake'] {
+  background: var(--color-brake);
+}
+
+.fill[data-pedal='clutch'] {
+  background: var(--color-clutch);
+}
+
+.fill[data-pedal='handbrake'] {
+  background: var(--color-handbrake);
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.steering {
+  position: relative;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--color-panel-border);
+}
+
+.steeringMarker {
+  position: absolute;
+  top: -3px;
+  width: 4px;
+  height: 16px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--color-accent);
+}

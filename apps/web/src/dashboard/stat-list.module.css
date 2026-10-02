@@ -1,0 +1,17 @@
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: var(--gap);
+  margin: 0;
+}
+
+.stat dt {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.stat dd {
+  margin: 4px 0 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}

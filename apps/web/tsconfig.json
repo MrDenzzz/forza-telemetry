@@ -1,0 +1,18 @@
+{
+  "extends": "@ft/tsconfig/next.json",
+  "compilerOptions": {
+    "types": ["node"],
+    // CSS modules and process.env are typed as index signatures; dot access keeps them readable,
+    // while noUncheckedIndexedAccess still marks a misspelt class name as possibly undefined.
+    "noPropertyAccessFromIndexSignature": false,
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": [
+    "next-env.d.ts",
+    "next.config.ts",
+    "src",
+    "test",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ]
+}
