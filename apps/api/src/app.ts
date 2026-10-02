@@ -6,9 +6,15 @@ import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module.ts';
 import type { AppConfig } from './config/app-config.ts';
 
-/** Builds and starts the application the same way for production and end-to-end tests. */
 export async function startApp(config: AppConfig): Promise<INestApplication> {
-  const app = await NestFactory.create(AppModule.forRoot(config), { bufferLogs: true });
+  return listen(await NestFactory.create(AppModule.forRoot(config), { bufferLogs: true }), config);
+}
+
+/**
+ * Configures and starts an application built from AppModule, the same way for production and
+ * for end-to-end tests that build it from a testing module with some providers replaced.
+ */
+export async function listen(app: INestApplication, config: AppConfig): Promise<INestApplication> {
   app.useLogger(app.get(Logger));
   app.useWebSocketAdapter(new WsAdapter(app));
   app.enableShutdownHooks();

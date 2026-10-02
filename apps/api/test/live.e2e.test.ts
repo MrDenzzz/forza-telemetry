@@ -20,6 +20,8 @@ import { startApp } from '../src/app.ts';
 import { loadConfig } from '../src/config/app-config.ts';
 import { UdpTelemetrySource } from '../src/telemetry/udp-telemetry-source.ts';
 
+import { startTestDatabase, type TestDatabase } from './test-database.ts';
+
 /** 8 s of free roam: 1.5 s of menu packets, then driving; 711 packets in total. */
 const RECORDING = fileURLToPath(new URL('fixtures/free-roam-start.ftr.gz', import.meta.url));
 const RECORDED_PACKETS = 711;
@@ -65,6 +67,16 @@ async function sendRecording(port: number, speed: number): Promise<void> {
   socket.close();
 }
 
+let database: TestDatabase;
+
+beforeAll(async () => {
+  database = await startTestDatabase();
+});
+
+afterAll(async () => {
+  await database.stop();
+});
+
 describe('live telemetry, end to end', () => {
   let app: INestApplication;
   let baseUrl: string;
@@ -87,6 +99,8 @@ describe('live telemetry, end to end', () => {
       LIVE_RATE_HZ: String(RATE_HZ),
       TELEMETRY_TIMEOUT_MS: '300',
       LOG_LEVEL: 'silent',
+      DATABASE_URL: database.url,
+      DATABASE_POOL_SIZE: '1',
     });
     app = await startApp(config);
     const { port } = (app.getHttpServer() as Server).address() as AddressInfo;
@@ -188,6 +202,8 @@ describe('startup', () => {
       HTTP_PORT: '0',
       UDP_PORT: String(blocker.address().port),
       LOG_LEVEL: 'silent',
+      DATABASE_URL: database.url,
+      DATABASE_POOL_SIZE: '1',
     });
 
     await expect(startApp(config)).rejects.toMatchObject({ code: 'EADDRINUSE' });

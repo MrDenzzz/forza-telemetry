@@ -3,8 +3,12 @@
   "ui": "stream",
   "agentGuidance": false,
   "tasks": {
+    "generate": {
+      "inputs": ["prisma/schema.prisma"],
+      "outputs": ["src/generated/**"]
+    },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "generate"],
       "env": ["NEXT_PUBLIC_*"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
@@ -12,17 +16,17 @@
       "dependsOn": ["^transit"]
     },
     "typecheck": {
-      "dependsOn": ["transit"]
+      "dependsOn": ["transit", "generate"]
     },
     "lint": {
-      "dependsOn": ["transit"]
+      "dependsOn": ["transit", "generate"]
     },
     "test": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit", "generate"],
       "outputs": ["coverage/**"]
     },
     "dev": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "generate"],
       "cache": false,
       "persistent": true
     }

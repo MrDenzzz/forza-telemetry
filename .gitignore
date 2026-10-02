@@ -8,6 +8,9 @@ coverage/
 .next/
 *.tsbuildinfo
 
+# Generated code
+**/src/generated/
+
 # Environment
 .env
 .env.*
@@ -23,3 +26,6 @@ recordings/
 
 # Next.js
 next-env.d.ts
+
+# Local embedded database (pnpm --filter @ft/api db:local)
+.pglite/

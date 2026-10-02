@@ -24,3 +24,6 @@ allowBuilds:
   '@swc/core': false
   # Its postinstall only installs git hooks; the root `prepare` script does that explicitly.
   lefthook: false
+  # Prisma: a Node version check, and the download of the schema engine that Migrate runs.
+  '@prisma/engines': true
+  prisma: true

@@ -1,3 +1,5 @@
+import { LAP_TRACE_CHANNELS, type LapTraceChannel } from '@ft/contracts';
+
 /**
  * A lap stored against track progress: one point every `TRACE_STEP` units of the game's
  * DistanceTraveled from the start line. Laps of the same route then line up point by point,
@@ -8,30 +10,7 @@
  */
 export const TRACE_STEP = 5;
 
-export const TRACE_CHANNELS = [
-  /** Seconds since the lap started. */
-  'elapsed',
-  /** m/s. */
-  'speed',
-  'rpm',
-  /** 0–1. */
-  'throttle',
-  /** 0–1. */
-  'brake',
-  /** -1 reverse, 0 neutral, 1… forward. */
-  'gear',
-  /** -1–1. */
-  'steer',
-  /** g. */
-  'lateralG',
-  /** g; positive when accelerating. */
-  'longitudinalG',
-  /** World position, meters. */
-  'x',
-  'z',
-] as const;
-
-export type TraceChannel = (typeof TRACE_CHANNELS)[number];
+export type TraceChannel = LapTraceChannel;
 export type TracePoint = Readonly<Record<TraceChannel, number>>;
 
 export interface LapTrace {
@@ -46,7 +25,7 @@ const STEPPED: ReadonlySet<TraceChannel> = new Set(['gear']);
 
 function interpolate(from: TracePoint, to: TracePoint, fraction: number): TracePoint {
   const point = {} as Record<TraceChannel, number>;
-  for (const channel of TRACE_CHANNELS) {
+  for (const channel of LAP_TRACE_CHANNELS) {
     point[channel] = STEPPED.has(channel)
       ? (fraction < 0.5 ? from : to)[channel]
       : from[channel] + (to[channel] - from[channel]) * fraction;
@@ -68,7 +47,7 @@ export class LapTraceBuilder {
     const length = trace.channels.elapsed.length;
     for (let index = 0; index < length; index += 1) {
       const point = {} as Record<TraceChannel, number>;
-      for (const channel of TRACE_CHANNELS) {
+      for (const channel of LAP_TRACE_CHANNELS) {
         point[channel] = trace.channels[channel][index] ?? 0;
       }
       builder.#points.push(point);
@@ -115,7 +94,7 @@ export class LapTraceBuilder {
 
   toTrace(): LapTrace {
     const channels = {} as Record<TraceChannel, number[]>;
-    for (const channel of TRACE_CHANNELS) {
+    for (const channel of LAP_TRACE_CHANNELS) {
       channels[channel] = this.#points.map((point) => point[channel]);
     }
     return { step: TRACE_STEP, channels };

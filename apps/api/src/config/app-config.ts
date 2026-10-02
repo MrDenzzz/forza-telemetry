@@ -17,6 +17,8 @@ const environmentSchema = z
       .default(DEFAULT_TELEMETRY_PORT),
     LIVE_RATE_HZ: z.coerce.number().min(1).max(60).default(30),
     TELEMETRY_TIMEOUT_MS: z.coerce.number().int().min(100).default(2000),
+    DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/, error: 'Expected a postgresql:// URL' }),
+    DATABASE_POOL_SIZE: z.coerce.number().int().min(1).max(100).default(10),
     LOG_LEVEL: z
       .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
       .default('info'),
@@ -28,6 +30,7 @@ const environmentSchema = z
     udp: { host: env.UDP_HOST, port: env.UDP_PORT },
     live: { rateHz: env.LIVE_RATE_HZ },
     telemetry: { timeoutMs: env.TELEMETRY_TIMEOUT_MS },
+    database: { url: env.DATABASE_URL, poolSize: env.DATABASE_POOL_SIZE },
     log: { level: env.LOG_LEVEL, pretty: env.LOG_PRETTY ?? env.NODE_ENV === 'development' },
   }));
 

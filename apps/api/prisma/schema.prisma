@@ -1,0 +1,118 @@
+// Sessions and laps derived from the telemetry stream. The raw stream is not stored:
+// see docs/adr/0005-session-storage.md.
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SessionKind {
+  free_roam
+  race
+
+  @@map("session_kind")
+}
+
+enum SessionEndReason {
+  car_changed
+  race_started
+  race_ended
+  race_restarted
+  idle
+  shutdown
+  interrupted
+
+  @@map("session_end_reason")
+}
+
+enum CarClass {
+  D
+  C
+  B
+  A
+  S1
+  S2
+  R
+  X
+
+  @@map("car_class")
+}
+
+enum Drivetrain {
+  FWD
+  RWD
+  AWD
+
+  @@map("drivetrain")
+}
+
+model Session {
+  id                  String            @id @db.Uuid
+  kind                SessionKind
+  carOrdinal          Int               @map("car_ordinal")
+  carClass            CarClass?         @map("car_class")
+  carPerformanceIndex Int               @map("car_performance_index")
+  carDrivetrain       Drivetrain?       @map("car_drivetrain")
+  carCylinders        Int               @map("car_cylinders")
+  startedAt           DateTime          @map("started_at") @db.Timestamptz(3)
+  endedAt             DateTime?         @map("ended_at") @db.Timestamptz(3)
+  endReason           SessionEndReason? @map("end_reason")
+  // Statistics arrive when the session ends; they stay null for an interrupted one.
+  drivingSeconds      Float?            @map("driving_seconds")
+  distanceMeters      Float?            @map("distance_meters")
+  maxSpeed            Float?            @map("max_speed")
+  maxLateralG         Float?            @map("max_lateral_g")
+  maxAccelerationG    Float?            @map("max_acceleration_g")
+  maxBrakingG         Float?            @map("max_braking_g")
+  lapCount            Int               @default(0) @map("lap_count")
+  bestLapSeconds      Float?            @map("best_lap_seconds")
+  laps                Lap[]
+
+  @@index([startedAt(sort: Desc), id(sort: Desc)])
+  @@map("sessions")
+}
+
+model Lap {
+  id             String    @id @default(uuid(7)) @db.Uuid
+  sessionId      String    @map("session_id") @db.Uuid
+  session        Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  number         Int
+  timeSeconds    Float     @map("time_seconds")
+  distanceMeters Float     @map("distance_meters")
+  isComplete     Boolean   @map("is_complete")
+  startedAt      DateTime  @map("started_at") @db.Timestamptz(3)
+  maxSpeed       Float     @map("max_speed")
+  averageSpeed   Float     @map("average_speed")
+  maxLateralG    Float     @map("max_lateral_g")
+  trace          LapTrace?
+
+  @@unique([sessionId, number])
+  @@map("laps")
+}
+
+// One row per lap, apart from the lap so that listing laps never reads the arrays.
+// Every channel holds one value per `step` units of route progress (about 1,200 per lap).
+model LapTrace {
+  lapId         String  @id @map("lap_id") @db.Uuid
+  lap           Lap     @relation(fields: [lapId], references: [id], onDelete: Cascade)
+  step          Float   @db.Real
+  elapsed       Float[] @db.Real
+  speed         Float[] @db.Real
+  rpm           Float[] @db.Real
+  throttle      Float[] @db.Real
+  brake         Float[] @db.Real
+  gear          Float[] @db.Real
+  steer         Float[] @db.Real
+  lateralG      Float[] @map("lateral_g") @db.Real
+  longitudinalG Float[] @map("longitudinal_g") @db.Real
+  x             Float[] @db.Real
+  z             Float[] @db.Real
+
+  @@map("lap_traces")
+}
