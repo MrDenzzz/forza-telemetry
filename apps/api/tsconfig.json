@@ -1,0 +1,10 @@
+{
+  "extends": "@ft/tsconfig/node.json",
+  "compilerOptions": {
+    // NestJS resolves dependencies from reflected constructor types and relies on parameter properties.
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "erasableSyntaxOnly": false
+  },
+  "include": ["src", "test"]
+}

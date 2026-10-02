@@ -15,5 +15,8 @@ catalog:
 
 # Dependency install scripts are opt-in (strictDepBuilds is on by default since pnpm 11).
 allowBuilds:
+  # Its postinstall only checks that the native binary loads and falls back to WebAssembly;
+  # the binary for each platform arrives as an optional dependency.
+  '@swc/core': false
   # Its postinstall only installs git hooks; the root `prepare` script does that explicitly.
   lefthook: false
