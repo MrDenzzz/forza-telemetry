@@ -24,6 +24,12 @@ Environment variables are validated once at startup; an invalid value stops the 
 | `LOG_LEVEL`            | `info`         | `fatal` … `trace`, or `silent`                                               |
 | `LOG_PRETTY`           | in development | Human-readable logs instead of JSON                                          |
 
+### Where the game runs
+
+- **Same PC, Steam:** the defaults work; point Data Out at `127.0.0.1:9876`.
+- **Same PC, Microsoft Store or PC Game Pass:** Windows blocks the game from sending to loopback until it is exempted, see [network setup](../../docs/fh6-data-out.md#network-setup-on-windows).
+- **Another PC or an Xbox:** set `UDP_HOST=0.0.0.0`, allow the UDP port in the firewall and point Data Out at this machine's LAN address.
+
 ## Interface
 
 | Endpoint      | Purpose                                                                                                                             |

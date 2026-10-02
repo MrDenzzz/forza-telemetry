@@ -17,7 +17,8 @@ docs/        архитектурные решения и описание пр�
 
 ## Быстрый старт
 
-Нужны Node.js 24 LTS и pnpm 12 (`npm install --global pnpm@12`).
+> **Нужны Node.js 24.11 или новее** и pnpm 12 (`npm install --global pnpm@12`).
+> Recorder и replayer запускают TypeScript напрямую через встроенное в Node удаление типов, поэтому на старых версиях они не работают; `pnpm install` отказывается ставиться на них сразу.
 
 ```sh
 pnpm install

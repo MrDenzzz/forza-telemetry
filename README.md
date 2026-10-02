@@ -17,7 +17,8 @@ docs/        architecture decision records and protocol reference
 
 ## Getting started
 
-Requirements: Node.js 24 LTS and pnpm 12 (`npm install --global pnpm@12`).
+> **Requirements: Node.js 24.11 or newer** and pnpm 12 (`npm install --global pnpm@12`).
+> The recorder and replayer run TypeScript directly with Node's built-in type stripping, so older versions fail; `pnpm install` refuses them up front.
 
 ```sh
 pnpm install
