@@ -16,6 +16,7 @@
     "check": "turbo run lint typecheck test build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "record": "node --conditions=@ft/source tools/recorder/src/main.ts",
     "prepare": "lefthook install"
   },
   "devDependencies": {

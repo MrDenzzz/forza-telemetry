@@ -17,3 +17,6 @@ coverage/
 *.log
 .DS_Store
 Thumbs.db
+
+# Local telemetry recordings
+recordings/
