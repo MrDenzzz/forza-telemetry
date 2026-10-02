@@ -46,11 +46,14 @@ In Forza Horizon 6 open Settings → HUD and Gameplay and set **Data Out** to On
 ## Running locally
 
 ```sh
+pnpm --filter @ft/api db:local                    # PostgreSQL without Docker (embedded PGlite) on 127.0.0.1:5433; keep it running
+cp apps/api/.env.example apps/api/.env            # once: points the API at that database
+pnpm --filter @ft/api db:migrate                  # once, and again after pulling new migrations
 pnpm dev                                          # dashboard on http://localhost:3000, API on :4000, telemetry on UDP 9876
 pnpm replay recordings/<file>.ftr.gz --loop       # without the game: replay a recording into it
 ```
 
-The dashboard follows the game live. The API streams over WebSocket at `ws://localhost:4000/live` and reports on `GET /health` whether the game is sending. Details: [dashboard](apps/web/README.md), [API](apps/api/README.md).
+The dashboard follows the game live. The API streams over WebSocket at `ws://localhost:4000/live`, records sessions and laps into the database, serves them at `GET /sessions`, and reports on `GET /health` whether the game is sending. Any PostgreSQL works in place of `db:local`: set `DATABASE_URL` in `apps/api/.env`. Details: [dashboard](apps/web/README.md), [API](apps/api/README.md).
 
 ## Recording and replaying
 

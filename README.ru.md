@@ -46,11 +46,14 @@ pnpm check
 ## Локальный запуск
 
 ```sh
+pnpm --filter @ft/api db:local                    # PostgreSQL без Docker (встроенный PGlite) на 127.0.0.1:5433; оставить запущенным
+cp apps/api/.env.example apps/api/.env            # один раз: направляет API на эту базу
+pnpm --filter @ft/api db:migrate                  # один раз и снова после получения новых миграций
 pnpm dev                                          # дашборд на http://localhost:3000, API на :4000, телеметрия на UDP 9876
 pnpm replay recordings/<файл>.ftr.gz --loop       # без игры: проиграть в него запись
 ```
 
-Дашборд показывает игру в реальном времени. API отдаёт поток по WebSocket на `ws://localhost:4000/live` и сообщает на `GET /health`, присылает ли игра данные. Подробнее: [дашборд](apps/web/README.ru.md), [API](apps/api/README.ru.md).
+Дашборд показывает игру в реальном времени. API отдаёт поток по WebSocket на `ws://localhost:4000/live`, записывает сессии и круги в базу, отдаёт их на `GET /sessions` и сообщает на `GET /health`, присылает ли игра данные. Вместо `db:local` подойдёт любой PostgreSQL: задайте `DATABASE_URL` в `apps/api/.env`. Подробнее: [дашборд](apps/web/README.ru.md), [API](apps/api/README.ru.md).
 
 ## Запись и воспроизведение
 
