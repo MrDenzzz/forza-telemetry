@@ -17,6 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "record": "node --conditions=@ft/source tools/recorder/src/main.ts",
+    "replay": "node --conditions=@ft/source tools/replayer/src/main.ts",
     "prepare": "lefthook install"
   },
   "devDependencies": {

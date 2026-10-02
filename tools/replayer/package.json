@@ -1,0 +1,27 @@
+{
+  "name": "@ft/replayer",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node --conditions=@ft/source src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@ft/recording": "workspace:*",
+    "@ft/telemetry-protocol": "workspace:*"
+  },
+  "devDependencies": {
+    "@ft/eslint-config": "workspace:*",
+    "@ft/tsconfig": "workspace:*",
+    "@ft/vitest-config": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}
