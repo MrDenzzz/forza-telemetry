@@ -32,8 +32,25 @@ pnpm check
 | `pnpm test`      | Модульные и интеграционные тесты                  |
 | `pnpm build`     | Продакшен-сборки                                  |
 | `pnpm format`    | Форматирование репозитория через Prettier         |
+| `pnpm record`    | Запись телеметрии игры в файл                     |
+| `pnpm replay`    | Воспроизведение записи по UDP                     |
 
 Коммиты оформляются по [Conventional Commits](https://www.conventionalcommits.org/ru/v1.0.0/). Git-хук, который ставится при `pnpm install`, проверяет сообщения коммитов и форматирует индексированные файлы.
+
+## Подключение игры
+
+В Forza Horizon 6 откройте Settings → HUD and Gameplay и установите **Data Out** в On, **Data Out IP Address** — `127.0.0.1`, **Data Out IP Port** — `9876`. Версиям из Microsoft Store и PC Game Pass также нужно [исключение для loopback](docs/fh6-data-out.ru.md#настройка-сети-в-windows).
+
+## Запись и воспроизведение
+
+Игра отправляет данные, только пока вы едете, поэтому разработка, тесты и задеплоенное демо работают на записях.
+
+```sh
+pnpm record --note "Goliath, 3 круга"
+pnpm replay recordings/fh6-<timestamp>.ftr.gz --loop
+```
+
+Подробнее: [recorder](tools/recorder/README.ru.md), [replayer](tools/replayer/README.ru.md) и [ADR 0002](docs/adr/0002-recording-format.ru.md) о формате файла.
 
 ## Документация
 

@@ -32,8 +32,25 @@ pnpm check
 | `pnpm test`      | Unit and integration tests                      |
 | `pnpm build`     | Production builds                               |
 | `pnpm format`    | Format the repository with Prettier             |
+| `pnpm record`    | Record the game's telemetry to a file           |
+| `pnpm replay`    | Replay a recording over UDP                     |
 
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/); a git hook installed by `pnpm install` checks messages and formats staged files.
+
+## Connecting the game
+
+In Forza Horizon 6 open Settings → HUD and Gameplay and set **Data Out** to On, **Data Out IP Address** to `127.0.0.1` and **Data Out IP Port** to `9876`. Microsoft Store and PC Game Pass builds also need a [loopback exemption](docs/fh6-data-out.md#network-setup-on-windows).
+
+## Recording and replaying
+
+The game streams only while you drive, so development, tests and the hosted demo run on recordings.
+
+```sh
+pnpm record --note "Goliath, 3 laps"
+pnpm replay recordings/fh6-<timestamp>.ftr.gz --loop
+```
+
+See [recorder](tools/recorder/README.md), [replayer](tools/replayer/README.md) and [ADR 0002](docs/adr/0002-recording-format.md) on the file format.
 
 ## Documentation
 
