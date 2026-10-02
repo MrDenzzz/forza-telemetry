@@ -49,16 +49,17 @@ All fields without an explicit type are F32. The 88 documented fields occupy 323
 
 Four sessions recorded on 2026-10-02 (FH6 on Steam, all driving assists on): free roam, a two-lap circuit race with a rewind, a sprint and a car change. 49,811 packets, 37,605 of them while driving [8].
 
-| Question                | Finding                                                                                                                                                                                        |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TireTemp` unit         | Fahrenheit. Readings span 50–347 and sit at 96–106 when a session starts; 347 °C would be impossible for a road tyre, while 347 °F (175 °C) after drifting is plausible. Not stated officially |
-| Rear tyre temperatures  | `TireTempRearLeft` equals `TireTempRearRight` in every driving packet, for all four cars, while front temperatures differ. Most likely a game bug: treat the rear as one axle value            |
-| `Acceleration`          | m/s² in car-local axes, gravity excluded: exactly 0 at a standstill, and the change in speed over time matches `AccelerationZ` (ratio 0.91–0.97)                                               |
-| `Gear`                  | 0 = reverse (seen while reversing), 1–7 = forward gears, 11 = neutral (single frames during automatic shifts and at a standstill)                                                              |
-| `WheelInPuddle`         | Integer flag 0 or 1, as the FH6 documentation says (Forza Motorsport sends a float depth at this offset)                                                                                       |
-| Trailing byte           | Always 0                                                                                                                                                                                       |
-| `Fuel`                  | Always 1: Horizon has no fuel consumption                                                                                                                                                      |
-| Pause menu in free roam | Does not interrupt the stream; `IsRaceOn` stays 1                                                                                                                                              |
+| Question                  | Finding                                                                                                                                                                                        |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TireTemp` unit           | Fahrenheit. Readings span 50–347 and sit at 96–106 when a session starts; 347 °C would be impossible for a road tyre, while 347 °F (175 °C) after drifting is plausible. Not stated officially |
+| Rear tyre temperatures    | `TireTempRearLeft` equals `TireTempRearRight` in every driving packet, for all four cars, while front temperatures differ. Most likely a game bug: treat the rear as one axle value            |
+| `Acceleration`            | m/s² in car-local axes, gravity excluded: exactly 0 at a standstill, and the change in speed over time matches `AccelerationZ` (ratio 0.91–0.97)                                               |
+| `Gear`                    | 0 = reverse (seen while reversing), 1–7 = forward gears, 11 = neutral (single frames during automatic shifts and at a standstill)                                                              |
+| `WheelInPuddle`           | Integer flag 0 or 1, as the FH6 documentation says (Forza Motorsport sends a float depth at this offset)                                                                                       |
+| `Speed`, `Gear` on screen | Match the in-game HUD: the dashboard showed 162 km/h in 4th gear alongside the game showing the same (S1 711 car, free roam)                                                                   |
+| Trailing byte             | Always 0                                                                                                                                                                                       |
+| `Fuel`                    | Always 1: Horizon has no fuel consumption                                                                                                                                                      |
+| Pause menu in free roam   | Does not interrupt the stream; `IsRaceOn` stays 1                                                                                                                                              |
 
 ### Car classes
 
