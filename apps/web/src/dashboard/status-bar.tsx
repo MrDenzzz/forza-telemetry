@@ -59,7 +59,7 @@ export function StatusBar() {
 
   return (
     <header className={styles.bar}>
-      <h1 className={styles.title}>Forza Telemetry</h1>
+      <h1 className={styles.title}>Live</h1>
       <p className={styles.status} data-tone={tone} role="status">
         {text}
       </p>
