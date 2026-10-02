@@ -8,6 +8,7 @@ export default {
       [
         'protocol',
         'contracts',
+        'live-client',
         'recording',
         'api',
         'web',
