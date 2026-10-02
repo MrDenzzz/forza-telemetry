@@ -61,3 +61,16 @@ export function node(tsconfigRootDir) {
     },
   });
 }
+
+/**
+ * Command-line tools, whose terminal output is their user interface.
+ *
+ * @param {string} tsconfigRootDir Directory of the consuming package, usually `import.meta.dirname`.
+ */
+export function cli(tsconfigRootDir) {
+  return defineConfig(node(tsconfigRootDir), {
+    rules: {
+      'no-console': 'off',
+    },
+  });
+}
