@@ -1,15 +1,13 @@
 import { z } from 'zod';
 
+import { carSchema } from './car.ts';
+
 /**
  * Messages the API pushes over the live WebSocket. Clients check `protocolVersion` in the
  * hello message; a breaking change to any schema here increments it.
  */
 export const LIVE_PROTOCOL_VERSION = 1;
 export const LIVE_PATH = '/live';
-
-/** Forza Horizon 6 car classes, from the slowest to the fastest. */
-export const CAR_CLASSES = ['D', 'C', 'B', 'A', 'S1', 'S2', 'R', 'X'] as const;
-export const DRIVETRAINS = ['FWD', 'RWD', 'AWD'] as const;
 
 const unit = z.number().min(0).max(1);
 
@@ -56,13 +54,7 @@ export const liveFrameSchema = z.object({
     rearLeft: tireSchema,
     rearRight: tireSchema,
   }),
-  car: z.object({
-    ordinal: z.int(),
-    class: z.enum(CAR_CLASSES).nullable(),
-    performanceIndex: z.int(),
-    drivetrain: z.enum(DRIVETRAINS).nullable(),
-    cylinders: z.int().nonnegative(),
-  }),
+  car: carSchema,
   race: z.object({
     /** 0 outside of a race. */
     position: z.int().nonnegative(),
@@ -73,7 +65,7 @@ export const liveFrameSchema = z.object({
     lastLapTime: z.number(),
     bestLapTime: z.number(),
     raceTime: z.number(),
-    /** Meters from the start line; negative before crossing it. */
+    /** Progress from the start line in the game's own unit, not meters; negative before it. */
     distance: z.number(),
   }),
   /** World position in meters. */
@@ -110,8 +102,6 @@ export const liveServerMessageSchema = z.discriminatedUnion('type', [
   liveFrameMessageSchema,
 ]);
 
-export type CarClass = (typeof CAR_CLASSES)[number];
-export type Drivetrain = (typeof DRIVETRAINS)[number];
 export type LiveFrame = z.infer<typeof liveFrameSchema>;
 export type TelemetryState = z.infer<typeof telemetryStateSchema>;
 export type LiveHelloMessage = z.infer<typeof liveHelloMessageSchema>;

@@ -1,6 +1,12 @@
 export {
   CAR_CLASSES,
   DRIVETRAINS,
+  carSchema,
+  type Car,
+  type CarClass,
+  type Drivetrain,
+} from './car.ts';
+export {
   LIVE_PATH,
   LIVE_PROTOCOL_VERSION,
   liveFrameMessageSchema,
@@ -10,8 +16,6 @@ export {
   liveStatusMessageSchema,
   parseLiveServerMessage,
   telemetryStateSchema,
-  type CarClass,
-  type Drivetrain,
   type LiveFrame,
   type LiveFrameMessage,
   type LiveHelloMessage,
@@ -21,3 +25,27 @@ export {
   type TelemetryState,
 } from './live.ts';
 export { healthResponseSchema, type HealthResponse } from './health.ts';
+export {
+  LAP_TRACE_CHANNELS,
+  SESSION_END_REASONS,
+  SESSION_KINDS,
+  lapDetailSchema,
+  lapSummarySchema,
+  lapTraceSchema,
+  listSessionsQuerySchema,
+  sessionDetailSchema,
+  sessionPageSchema,
+  sessionStatsSchema,
+  sessionSummarySchema,
+  type LapDetail,
+  type LapSummary,
+  type LapTrace,
+  type LapTraceChannel,
+  type ListSessionsQuery,
+  type SessionDetail,
+  type SessionEndReason,
+  type SessionKind,
+  type SessionPage,
+  type SessionStats,
+  type SessionSummary,
+} from './history.ts';
