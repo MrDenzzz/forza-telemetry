@@ -3,6 +3,7 @@ import { LoggerModule } from 'nestjs-pino';
 
 import { APP_CONFIG, type AppConfig } from './config/app-config.ts';
 import { HealthModule } from './health/health.module.ts';
+import { LiveModule } from './live/live.module.ts';
 
 @Global()
 @Module({})
@@ -21,6 +22,7 @@ export class AppModule {
             autoLogging: { ignore: (request) => request.url === '/health' },
           },
         }),
+        LiveModule,
         HealthModule,
       ],
       providers: [{ provide: APP_CONFIG, useValue: config }],
