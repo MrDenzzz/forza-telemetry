@@ -1,0 +1,4 @@
+{
+  "extends": "@ft/tsconfig/dom-library.json",
+  "include": ["src", "test"]
+}
