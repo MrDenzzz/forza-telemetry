@@ -1,15 +1,8 @@
 import type { LiveFrame } from '@ft/contracts';
-import { carClassOf, drivetrainOf, gearOf, type TelemetryPacket } from '@ft/telemetry-protocol';
+import { gearOf, type TelemetryPacket } from '@ft/telemetry-protocol';
 
+import { carOf, fahrenheitToCelsius, gForceOf, pedal, steer } from '../telemetry/normalize.ts';
 import type { TelemetrySample } from '../telemetry/telemetry-state.ts';
-
-const STANDARD_GRAVITY = 9.806_65;
-const PEDAL_MAX = 255;
-const STEER_MAX = 127;
-
-const fahrenheitToCelsius = (fahrenheit: number): number => ((fahrenheit - 32) * 5) / 9;
-const clamp = (value: number, min: number, max: number): number =>
-  Math.min(max, Math.max(min, value));
 
 type Corner = 'FrontLeft' | 'FrontRight' | 'RearLeft' | 'RearRight';
 
@@ -39,18 +32,13 @@ export function toLiveFrame({ packet, receivedAt }: TelemetrySample): LiveFrame 
     },
     gear: gearOf(packet.gear),
     inputs: {
-      throttle: packet.accel / PEDAL_MAX,
-      brake: packet.brake / PEDAL_MAX,
-      clutch: packet.clutch / PEDAL_MAX,
-      handbrake: packet.handBrake / PEDAL_MAX,
-      // S8 reaches -128, one step beyond the documented -127.
-      steer: clamp(packet.steer / STEER_MAX, -1, 1),
+      throttle: pedal(packet.accel),
+      brake: pedal(packet.brake),
+      clutch: pedal(packet.clutch),
+      handbrake: pedal(packet.handBrake),
+      steer: steer(packet.steer),
     },
-    gForce: {
-      lateral: packet.accelerationX / STANDARD_GRAVITY,
-      longitudinal: packet.accelerationZ / STANDARD_GRAVITY,
-      vertical: packet.accelerationY / STANDARD_GRAVITY,
-    },
+    gForce: gForceOf(packet),
     power: packet.power,
     torque: packet.torque,
     boost: packet.boost,
@@ -60,13 +48,7 @@ export function toLiveFrame({ packet, receivedAt }: TelemetrySample): LiveFrame 
       rearLeft: tire(packet, 'RearLeft'),
       rearRight: tire(packet, 'RearRight'),
     },
-    car: {
-      ordinal: packet.carOrdinal,
-      class: carClassOf(packet.carClass) ?? null,
-      performanceIndex: packet.carPerformanceIndex,
-      drivetrain: drivetrainOf(packet.drivetrainType) ?? null,
-      cylinders: packet.numCylinders,
-    },
+    car: carOf(packet),
     race: {
       position: packet.racePosition,
       lap: packet.lapNumber,
