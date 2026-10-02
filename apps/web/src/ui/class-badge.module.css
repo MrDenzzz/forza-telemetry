@@ -1,0 +1,39 @@
+.badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #0b0d10;
+  background: var(--color-muted);
+}
+
+.badge[data-class='D'] {
+  background: #64b5f6;
+}
+
+.badge[data-class='C'] {
+  background: #ffd54f;
+}
+
+.badge[data-class='B'] {
+  background: #ff9f43;
+}
+
+.badge[data-class='A'] {
+  background: #ff6b6b;
+}
+
+.badge[data-class='S1'] {
+  background: #b388ff;
+}
+
+.badge[data-class='S2'] {
+  background: #4c8dff;
+}
+
+.badge[data-class='R'] {
+  background: #ff4d8d;
+}
+
+.badge[data-class='X'] {
+  background: #3ddc84;
+}

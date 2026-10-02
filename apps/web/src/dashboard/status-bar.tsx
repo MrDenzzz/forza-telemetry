@@ -4,6 +4,8 @@ import { LIVE_PROTOCOL_VERSION } from '@ft/contracts';
 import type { ConnectionStatus } from '@ft/live-client';
 import { useConnectionStatus, useFrameValue } from '@ft/live-client/react';
 
+import { ClassBadge } from '../ui/class-badge';
+
 import styles from './status-bar.module.css';
 
 type Tone = 'ok' | 'warning' | 'error' | 'muted';
@@ -45,9 +47,7 @@ function CarBadge() {
   }
   return (
     <div className={styles.car} aria-label="Car">
-      <span className={styles.classBadge} data-class={carClass ?? 'unknown'}>
-        {carClass ?? '?'} {performanceIndex}
-      </span>
+      <ClassBadge carClass={carClass} performanceIndex={performanceIndex} />
       {drivetrain ? <span>{drivetrain}</span> : null}
       <span className={styles.ordinal}>car #{ordinal}</span>
     </div>

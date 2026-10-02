@@ -7,6 +7,8 @@ import type uPlot from 'uplot';
 
 import 'uplot/dist/uPlot.min.css';
 
+import { loadUPlot } from '../ui/load-uplot';
+
 import styles from './telemetry-chart.module.css';
 
 export interface ChartSeries {
@@ -81,8 +83,7 @@ export function TelemetryChart({
       }
     });
 
-    // uPlot touches the DOM when imported, so it loads only in the browser.
-    void import('uplot').then(({ default: UPlot }) => {
+    void loadUPlot().then((UPlot) => {
       if (disposed) {
         return;
       }

@@ -41,46 +41,6 @@
   font-size: 0.9rem;
 }
 
-.classBadge {
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-weight: 700;
-  color: #0b0d10;
-  background: var(--color-muted);
-}
-
-.classBadge[data-class='D'] {
-  background: #64b5f6;
-}
-
-.classBadge[data-class='C'] {
-  background: #ffd54f;
-}
-
-.classBadge[data-class='B'] {
-  background: #ff9f43;
-}
-
-.classBadge[data-class='A'] {
-  background: #ff6b6b;
-}
-
-.classBadge[data-class='S1'] {
-  background: #b388ff;
-}
-
-.classBadge[data-class='S2'] {
-  background: #4c8dff;
-}
-
-.classBadge[data-class='R'] {
-  background: #ff4d8d;
-}
-
-.classBadge[data-class='X'] {
-  background: #3ddc84;
-}
-
 .ordinal {
   color: var(--color-muted);
 }
