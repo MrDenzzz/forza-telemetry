@@ -179,6 +179,9 @@ catalogs:
     vitest:
       specifier: ^5.0.3
       version: 5.0.3
+    zod:
+      specifier: ^4.6.0
+      version: 4.6.5
 
 importers:
 
@@ -202,6 +205,37 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+
+  packages/contracts:
+    dependencies:
+      '@ft/telemetry-protocol':
+        specifier: workspace:*
+        version: link:../telemetry-protocol
+      zod:
+        specifier: 'catalog:'
+        version: 4.6.5
+    devDependencies:
+      '@ft/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@ft/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@ft/vitest-config':
+        specifier: workspace:*
+        version: link:../vitest-config
+      eslint:
+        specifier: 'catalog:'
+        version: 10.11.0(jiti@2.6.1)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vite:
+        specifier: 'catalog:'
+        version: 8.3.2(@types/node@26.6.3)(jiti@2.6.1)
+      vitest:
+        specifier: 'catalog:'
+        version: 5.0.3(@types/node@26.6.3)(vite@8.3.2(@types/node@26.6.3)(jiti@2.6.1))
 
   packages/eslint-config:
     dependencies:
@@ -1531,6 +1565,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
 snapshots:
 
   '@babel/code-frame@7.29.7':
@@ -2598,3 +2635,5 @@ snapshots:
       yargs-parser: 22.0.0
 
   yocto-queue@0.1.0: {}
+
+  zod@4.6.5: {}

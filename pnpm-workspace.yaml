@@ -11,6 +11,7 @@ catalog:
   typescript: ~6.0.3
   vite: ^8.3.0
   vitest: ^5.0.3
+  zod: ^4.6.0
 
 # Dependency install scripts are opt-in (strictDepBuilds is on by default since pnpm 11).
 allowBuilds:
