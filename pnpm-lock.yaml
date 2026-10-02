@@ -208,6 +208,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@ft/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
       '@ft/telemetry-protocol':
         specifier: workspace:*
         version: link:../../packages/telemetry-protocol

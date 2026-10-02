@@ -2,6 +2,7 @@ import { Global, Module, type DynamicModule } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 
 import { APP_CONFIG, type AppConfig } from './config/app-config.ts';
+import { TelemetryModule } from './telemetry/telemetry.module.ts';
 
 @Global()
 @Module({})
@@ -20,6 +21,7 @@ export class AppModule {
             autoLogging: { ignore: (request) => request.url === '/health' },
           },
         }),
+        TelemetryModule,
       ],
       providers: [{ provide: APP_CONFIG, useValue: config }],
       exports: [APP_CONFIG],
