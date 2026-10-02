@@ -26,6 +26,7 @@ pnpm check
 
 | Скрипт           | Что делает                                        |
 | ---------------- | ------------------------------------------------- |
+| `pnpm dev`       | Запуск API в режиме watch                         |
 | `pnpm check`     | Линт, проверка типов, тесты и сборка всех пакетов |
 | `pnpm lint`      | ESLint с правилами, использующими типы            |
 | `pnpm typecheck` | Проверка типов TypeScript во всех пакетах         |
@@ -40,6 +41,15 @@ pnpm check
 ## Подключение игры
 
 В Forza Horizon 6 откройте Settings → HUD and Gameplay и установите **Data Out** в On, **Data Out IP Address** — `127.0.0.1`, **Data Out IP Port** — `9876`. Версиям из Microsoft Store и PC Game Pass также нужно [исключение для loopback](docs/fh6-data-out.ru.md#настройка-сети-в-windows).
+
+## Запуск API
+
+```sh
+pnpm dev                                          # API на http://localhost:4000, телеметрия на UDP 9876
+pnpm replay recordings/<файл>.ftr.gz --loop       # без игры: проиграть в него запись
+```
+
+Live-данные идут по WebSocket на `ws://localhost:4000/live`; `GET /health` показывает, присылает ли игра данные. Конфигурация и точки входа: [apps/api](apps/api/README.ru.md).
 
 ## Запись и воспроизведение
 
@@ -62,8 +72,8 @@ pnpm replay recordings/fh6-<timestamp>.ftr.gz --loop
 ## План
 
 - [x] Основа монорепо: workspaces, общие конфиги, CI
-- [ ] Парсер пакета, recorder и replayer
-- [ ] API: приём UDP и live-поток по WebSocket
+- [x] Парсер пакета, recorder и replayer
+- [x] API: приём UDP и live-поток по WebSocket
 - [ ] Web: live-дашборд
 - [ ] Сессии, круги, история и сравнение кругов
 - [ ] Mobile: live-приборы

@@ -26,6 +26,7 @@ pnpm check
 
 | Script           | What it does                                    |
 | ---------------- | ----------------------------------------------- |
+| `pnpm dev`       | Run the API in watch mode                       |
 | `pnpm check`     | Lint, typecheck, test and build every workspace |
 | `pnpm lint`      | ESLint with type-aware rules                    |
 | `pnpm typecheck` | TypeScript in every workspace                   |
@@ -40,6 +41,15 @@ Commits follow [Conventional Commits](https://www.conventionalcommits.org/); a g
 ## Connecting the game
 
 In Forza Horizon 6 open Settings → HUD and Gameplay and set **Data Out** to On, **Data Out IP Address** to `127.0.0.1` and **Data Out IP Port** to `9876`. Microsoft Store and PC Game Pass builds also need a [loopback exemption](docs/fh6-data-out.md#network-setup-on-windows).
+
+## Running the API
+
+```sh
+pnpm dev                                          # API on http://localhost:4000, telemetry on UDP 9876
+pnpm replay recordings/<file>.ftr.gz --loop       # without the game: replay a recording into it
+```
+
+Live data streams over WebSocket at `ws://localhost:4000/live`; `GET /health` reports whether the game is sending. Configuration and endpoints: [apps/api](apps/api/README.md).
 
 ## Recording and replaying
 
@@ -62,8 +72,8 @@ Every document has a Russian translation (`*.ru.md`) linked at its top.
 ## Roadmap
 
 - [x] Monorepo foundation: workspaces, shared configs, CI
-- [ ] Packet parser, recorder and replayer
-- [ ] API: UDP ingest and live WebSocket stream
+- [x] Packet parser, recorder and replayer
+- [x] API: UDP ingest and live WebSocket stream
 - [ ] Web: live dashboard
 - [ ] Sessions, laps, history and lap comparison
 - [ ] Mobile: live gauges
