@@ -16,7 +16,7 @@ One repository with **pnpm workspaces** for dependency management and **Turborep
 - `apps/*` are deployable applications, `tools/*` are developer CLIs, `packages/*` are libraries and shared configuration.
 - Versions of dependencies used by several workspaces live in the pnpm **catalog** (`pnpm-workspace.yaml`), so they cannot drift apart.
 - Workspace libraries export TypeScript sources under the custom `@ft/source` condition and compiled `dist` as the default. Type checking, linting, tests and editor navigation read sources directly; only runtime artifacts need a build. Turborepo models this with a `transit` task, so `lint`, `typecheck` and `test` are invalidated by changes in dependencies without waiting for their builds.
-- Shared TypeScript and ESLint settings are workspace packages (`@ft/tsconfig`, `@ft/eslint-config`) rather than root files, so every package declares what it extends.
+- Shared TypeScript, ESLint and Vitest settings are workspace packages (`@ft/tsconfig`, `@ft/eslint-config`, `@ft/vitest-config`) rather than root files, so every package declares what it extends.
 - pnpm's supply-chain defaults stay on: dependency install scripts require an explicit `allowBuilds` entry, and releases younger than one day are not installed.
 
 ## Consequences
