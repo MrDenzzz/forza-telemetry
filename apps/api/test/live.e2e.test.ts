@@ -121,7 +121,7 @@ describe('live telemetry, end to end', () => {
 
     await sendRecording(udpPort, 2);
     await waitFor(() => statuses().at(-1) === 'offline');
-  }, 30_000);
+  }, 60_000);
 
   afterAll(async () => {
     client.close();

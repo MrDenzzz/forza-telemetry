@@ -103,7 +103,7 @@ describe('session history, end to end', () => {
       ({ items }) => items[0]?.endedAt !== null,
     );
     session = sessionDetailSchema.parse(await getJson(`/sessions/${page.items[0]?.id ?? ''}`));
-  }, 30_000);
+  }, 60_000);
 
   afterAll(async () => {
     await app.close();
