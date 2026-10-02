@@ -1,0 +1,9 @@
+* text=auto eol=lf
+
+# Raw telemetry packets and recordings
+*.bin binary
+*.ftr binary
+
+*.png binary
+*.gif binary
+*.jpg binary

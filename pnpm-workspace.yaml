@@ -1,0 +1,9 @@
+packages:
+  - apps/*
+  - packages/*
+  - tools/*
+
+# Shared versions for dependencies used by more than one workspace.
+catalog:
+  # typescript-eslint supports TypeScript <6.1; TypeScript does not follow semver.
+  typescript: ~6.0.3
