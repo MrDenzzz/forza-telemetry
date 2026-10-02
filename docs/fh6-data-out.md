@@ -32,7 +32,7 @@ Offsets are derived from the ordered field list in the official documentation [1
 | 0–19    | State, engine | `IsRaceOn` S32, `TimestampMS` U32, `EngineMaxRpm`, `EngineIdleRpm`, `CurrentEngineRpm` F32                                                                                                                 |
 | 20–67   | Dynamics      | `Acceleration` XYZ, `Velocity` XYZ (car-local: X right, Y up, Z forward), `AngularVelocity` XYZ (rad/s), `Yaw`, `Pitch`, `Roll` (rad)                                                                      |
 | 68–211  | Wheels ×4     | `NormalizedSuspensionTravel`, `TireSlipRatio`, `WheelRotationSpeed` (rad/s), `WheelOnRumbleStrip` S32, `WheelInPuddle` S32, `SurfaceRumble`, `TireSlipAngle`, `TireCombinedSlip`, `SuspensionTravelMeters` |
-| 212–231 | Car           | `CarOrdinal`, `CarClass` (0 = D … 7 = X officially, see open questions), `CarPerformanceIndex` (100–999), `DrivetrainType` (0 FWD, 1 RWD, 2 AWD), `NumCylinders`                                           |
+| 212–231 | Car           | `CarOrdinal`, `CarClass` (0 = D … 7 = X, see [car classes](#car-classes)), `CarPerformanceIndex` (100–999), `DrivetrainType` (0 FWD, 1 RWD, 2 AWD), `NumCylinders`                                         |
 | 232–243 | Horizon only  | `CarGroup` U32, `SmashableVelDiff` F32 (m/s), `SmashableMass` F32 (kg)                                                                                                                                     |
 | 244–311 | Dash          | `Position` XYZ (m), `Speed` (m/s), `Power` (W), `Torque` (N·m), `TireTemp` ×4, `Boost` (psi), `Fuel` (0–1), `DistanceTraveled` (m), `BestLap`, `LastLap`, `CurrentLap`, `CurrentRaceTime` (s)              |
 | 312–322 | Race, inputs  | `LapNumber` U16, `RacePosition` U8, `Accel`, `Brake`, `Clutch`, `HandBrake` U8 (0–255), `Gear` U8, `Steer` S8 (−127…127), `NormalizedDrivingLine` S8, `NormalizedAIBrakeDifference` S8                     |
@@ -60,6 +60,23 @@ Four sessions recorded on 2026-10-02 (FH6 on Steam, all driving assists on): fre
 | `Fuel`                  | Always 1: Horizon has no fuel consumption                                                                                                                                                      |
 | Pause menu in free roam | Does not interrupt the stream; `IsRaceOn` stays 1                                                                                                                                              |
 
+### Car classes
+
+`CarClass` is an index into the eight Forza Horizon 6 classes. Ranges come from the game's car menus; every car in the recordings falls into the expected class.
+
+| `CarClass` | Class | Performance index |
+| ---------- | ----- | ----------------- |
+| 0          | D     | 100–400           |
+| 1          | C     | 401–500           |
+| 2          | B     | 501–600           |
+| 3          | A     | 601–700           |
+| 4          | S1    | 701–800           |
+| 5          | S2    | 801–900           |
+| 6          | R     | 901–998           |
+| 7          | X     | 999               |
+
+Forza Horizon 5 used different class boundaries, so the label for an index depends on the game the data came from.
+
 ### Race lifecycle
 
 Observed in the circuit race and the sprint:
@@ -79,11 +96,10 @@ Consequences for session and lap detection:
 
 ## Still open
 
-| Question                              | What we know                                                                                              | How to settle it                              |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| `CarClass` letters                    | Observed 2 for PI 600, 4 for PI 711 and 6 for PI 960 and 998, which does not match FH5's class boundaries | Note the in-game class of those cars          |
-| Race abandoned mid-lap                | Should look like a finish with a short final lap                                                          | Record a race quit halfway                    |
-| Manual gearbox, clutch, rumble strips | All recordings used an automatic gearbox and assists; `WheelOnRumbleStrip` never fired                    | Record with assists off on a track with kerbs |
+| Question                              | What we know                                                                           | How to settle it                              |
+| ------------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Race abandoned mid-lap                | Should look like a finish with a short final lap                                       | Record a race quit halfway                    |
+| Manual gearbox, clutch, rumble strips | All recordings used an automatic gearbox and assists; `WheelOnRumbleStrip` never fired | Record with assists off on a track with kerbs |
 
 ## Network setup on Windows
 
