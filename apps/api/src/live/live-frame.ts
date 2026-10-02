@@ -23,7 +23,11 @@ function tire(packet: TelemetryPacket, corner: Corner): LiveFrame['tires']['fron
   };
 }
 
-/** Converts a wire packet into the frame clients receive: SI units, °C, g, normalised inputs. */
+/**
+ * Converts a wire packet into the frame clients receive: SI units, °C, g, normalised inputs.
+ * Class and drivetrain labels come from the protocol package; the contract declares the same
+ * values on its own, so clients never depend on the wire format, and a mismatch fails to compile.
+ */
 export function toLiveFrame({ packet, receivedAt }: TelemetrySample): LiveFrame {
   return {
     receivedAt,

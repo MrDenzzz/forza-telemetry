@@ -22,7 +22,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@ft/telemetry-protocol": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {

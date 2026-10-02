@@ -1,5 +1,11 @@
-import { liveFrameSchema } from '@ft/contracts';
-import { decodePacket, encodePacket, type TelemetryPacket } from '@ft/telemetry-protocol';
+import { CAR_CLASSES, DRIVETRAINS, liveFrameSchema } from '@ft/contracts';
+import {
+  CAR_CLASSES as WIRE_CAR_CLASSES,
+  DRIVETRAINS as WIRE_DRIVETRAINS,
+  decodePacket,
+  encodePacket,
+  type TelemetryPacket,
+} from '@ft/telemetry-protocol';
 import { describe, expect, it } from 'vitest';
 
 import { toLiveFrame } from '../src/live/live-frame.ts';
@@ -47,6 +53,11 @@ describe('toLiveFrame', () => {
     const frame = frameOf({ accel: 255, brake: 51, clutch: 0, handBrake: 255, steer: -128 });
 
     expect(frame.inputs).toEqual({ throttle: 1, brake: 0.2, clutch: 0, handbrake: 1, steer: -1 });
+  });
+
+  it('uses the same class and drivetrain labels as the protocol', () => {
+    expect(CAR_CLASSES).toEqual(WIRE_CAR_CLASSES);
+    expect(DRIVETRAINS).toEqual(WIRE_DRIVETRAINS);
   });
 
   it('labels car class and drivetrain, and leaves unknown codes empty', () => {

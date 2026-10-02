@@ -1,4 +1,6 @@
 export {
+  CAR_CLASSES,
+  DRIVETRAINS,
   LIVE_PATH,
   LIVE_PROTOCOL_VERSION,
   liveFrameMessageSchema,
@@ -8,6 +10,8 @@ export {
   liveStatusMessageSchema,
   parseLiveServerMessage,
   telemetryStateSchema,
+  type CarClass,
+  type Drivetrain,
   type LiveFrame,
   type LiveFrameMessage,
   type LiveHelloMessage,

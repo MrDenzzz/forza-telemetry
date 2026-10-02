@@ -1,4 +1,3 @@
-import { CAR_CLASSES, DRIVETRAINS } from '@ft/telemetry-protocol';
 import { z } from 'zod';
 
 /**
@@ -7,6 +6,10 @@ import { z } from 'zod';
  */
 export const LIVE_PROTOCOL_VERSION = 1;
 export const LIVE_PATH = '/live';
+
+/** Forza Horizon 6 car classes, from the slowest to the fastest. */
+export const CAR_CLASSES = ['D', 'C', 'B', 'A', 'S1', 'S2', 'R', 'X'] as const;
+export const DRIVETRAINS = ['FWD', 'RWD', 'AWD'] as const;
 
 const unit = z.number().min(0).max(1);
 
@@ -107,6 +110,8 @@ export const liveServerMessageSchema = z.discriminatedUnion('type', [
   liveFrameMessageSchema,
 ]);
 
+export type CarClass = (typeof CAR_CLASSES)[number];
+export type Drivetrain = (typeof DRIVETRAINS)[number];
 export type LiveFrame = z.infer<typeof liveFrameSchema>;
 export type TelemetryState = z.infer<typeof telemetryStateSchema>;
 export type LiveHelloMessage = z.infer<typeof liveHelloMessageSchema>;
