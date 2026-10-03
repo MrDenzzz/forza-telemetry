@@ -1,9 +1,12 @@
 import {
+  LIVE_COURSE_PATH,
   lapDetailSchema,
+  liveCourseSchema,
   sessionDetailSchema,
   sessionPageSchema,
   type LapDetail,
   type ListSessionsQuery,
+  type LiveCourse,
   type SessionDetail,
   type SessionPage,
 } from '@ft/contracts';
@@ -18,8 +21,9 @@ export class HistoryApiError extends Error {
 type Fetch = (input: URL, init: RequestInit) => Promise<Response>;
 
 /**
- * The REST history of the API, read on the server. Responses are validated against the shared
- * contracts; a missing session or lap is null, anything else unexpected throws.
+ * The REST resources of the API, read on the server: the history, and the route of a replayed
+ * drive. Responses are validated against the shared contracts; a missing resource is null,
+ * anything else unexpected throws.
  */
 export function createHistoryApi(
   apiUrl: string,
@@ -73,6 +77,10 @@ export function createHistoryApi(
     /** A recorded lap never changes, so it is cached for good, as the API allows. */
     lap: (id: string): Promise<LapDetail | null> =>
       request(`/laps/${encodeURIComponent(id)}`, lapDetailSchema, { cache: 'force-cache' }),
+
+    /** The route of the drive the API replays; null while the game is its source. */
+    course: (): Promise<LiveCourse | null> =>
+      request(LIVE_COURSE_PATH, liveCourseSchema, { cache: 'no-store' }),
   };
 }
 

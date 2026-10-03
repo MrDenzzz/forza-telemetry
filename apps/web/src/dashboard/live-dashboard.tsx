@@ -1,5 +1,6 @@
 'use client';
 
+import type { LiveCourse } from '@ft/contracts';
 import { LiveStore } from '@ft/live-client';
 import { LiveStoreProvider, useConnectionStatus } from '@ft/live-client/react';
 import { useState, type ReactNode } from 'react';
@@ -26,7 +27,14 @@ function Gauges({ children }: { children: ReactNode }) {
   );
 }
 
-export function LiveDashboard({ liveUrl }: { liveUrl: string }) {
+export function LiveDashboard({
+  liveUrl,
+  course = null,
+}: {
+  liveUrl: string;
+  /** The route of a replayed recording, drawn under the one driven. */
+  course?: LiveCourse | null;
+}) {
   const [store] = useState(
     () => new LiveStore({ url: liveUrl, historySeconds: CHART_WINDOW_SECONDS }),
   );
@@ -55,7 +63,7 @@ export function LiveDashboard({ liveUrl }: { liveUrl: string }) {
             <Race />
           </div>
           <div className={styles.route}>
-            <RouteMap />
+            <RouteMap outline={course} />
           </div>
           <div className={styles.engine}>
             <Engine />

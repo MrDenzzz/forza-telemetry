@@ -10,6 +10,11 @@ import { RouteTrace } from './route-trace';
 import { useFrameDrawing } from './use-frame-drawing';
 
 const SIZE = 220;
+/**
+ * The map zooms in no closer than this much ground across, so that the first stretch driven shows
+ * as a stretch, not as a curve across the whole map.
+ */
+const MIN_SPAN_METERS = 400;
 
 /** World positions, as a RouteTrace keeps them. */
 export interface RoutePoints {
@@ -39,7 +44,7 @@ function strokeRoute(
  * `outline` (the whole course of a recorded drive), the map is framed on it and draws it faintly
  * underneath, so it neither rescales as the car goes nor empties when a replay seeks.
  */
-export function RouteMap({ outline }: { outline?: RoutePoints }) {
+export function RouteMap({ outline = null }: { outline?: RoutePoints | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const traceRef = useRef(new RouteTrace());
 
@@ -67,7 +72,7 @@ export function RouteMap({ outline }: { outline?: RoutePoints }) {
     }
 
     const style = getComputedStyle(canvas);
-    const project = fitPoints(bounds.xs, bounds.zs, SIZE, SIZE, 12);
+    const project = fitPoints(bounds.xs, bounds.zs, SIZE, SIZE, 12, MIN_SPAN_METERS);
     context.lineWidth = 2.5;
     context.lineJoin = 'round';
     if (outline) {
