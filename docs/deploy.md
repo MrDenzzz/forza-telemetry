@@ -88,15 +88,15 @@ The demo page plays a gameplay video with the dashboard drawn over it. The files
 
 | File                    | Contents                                                                                       |
 | ----------------------- | ---------------------------------------------------------------------------------------------- |
-| `demo-1080p60.av1.webm` | The gameplay: AV1, 10-bit, about 5.4 Mbit/s, 132 MB.                                           |
-| `demo-720p60.h264.mp4`  | A copy for browsers without AV1, such as Safari on older iPhones: 106 MB.                      |
+| `demo-1080p60.av1.webm` | The gameplay with its sound: AV1, 10-bit, about 5.4 Mbit/s, and Opus. 135 MB.                  |
+| `demo-720p60.h264.mp4`  | A copy for browsers without AV1, such as Safari on older iPhones: 109 MB.                      |
 | `demo-poster.jpg`       | The picture shown until the video plays.                                                       |
 | `track.json`            | The telemetry, timed to the video.                                                             |
 | `track.json.gz`         | A compressed copy of the telemetry. nginx serves it in place of `track.json`: 0.7 MB, not 5.9. |
 
 The files are made from a screen capture (OBS) and the telemetry recording made alongside it.
 
-First find the offset between the two clocks: compare the speed in the game's HUD with the recorded speed. In the current demo the video's clock is 4.71 s ahead of the recording's. So the clip cut at seconds 22.0–218.5 of the video is seconds 17.29–213.79 of the recording.
+First find the offset between the two clocks. Compare the speed in the game's HUD with the recorded speed where it changes fastest, under hard braking: there 1 km/h is about 10 ms. The HUD drops the fraction, and so does the dashboard. In the current demo the video's clock is 4.76 s ahead of the recording's. So the clip cut at seconds 22.0–218.5 of the video is seconds 17.24–213.74 of the recording.
 
 ```sh
 SRC=capture.mp4
@@ -107,7 +107,7 @@ ffmpeg -ss 22 -to 218.5 -i "$SRC" -an -vf scale=1280:720 -c:v libx264 -preset sl
 ffmpeg -ss 25 -i "$SRC" -frames:v 1 -vf scale=1280:720 demo-poster.jpg
 
 pnpm --filter @ft/api build
-node apps/api/dist/export-demo-track.js drive.ftr.gz --from 17.29 --to 213.79 > track.json
+node apps/api/dist/export-demo-track.js drive.ftr.gz --from 17.24 --to 213.74 > track.json
 gzip -9 -k track.json
 ```
 
