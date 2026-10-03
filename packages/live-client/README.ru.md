@@ -32,4 +32,6 @@ function Speed() {
 | `toCanvasPoint`, `MAX_G`, `G_FORCE_RINGS`                                     | Геометрия g-g диаграммы: поперечное ускорение вправо, разгон вверх, всплески прижимаются к краю                                              |
 | `toKmh`, `gearLabel`, `lapTime`, `rpmFraction`, `temperatureTone`, `gripTone` | Правила отображения, общие для обоих дашбордов: единицы, подписи и диапазоны температуры и сцепления шин                                     |
 
+Тесты обоих дашбордов берут `createScriptedStore()` и `SAMPLE_FRAME` из `@ft/live-client/testing`: store на фейковом сокете, в который тест проигрывает сообщения по одному.
+
 Статусы: `connecting`, `connected` (с состоянием игры и частотой кадров), `waiting` (следующая попытка и её задержка) и `incompatible`. Почему всё устроено так: [ADR 0004](../../docs/adr/0004-live-dashboard-rendering.ru.md).

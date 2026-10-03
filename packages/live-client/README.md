@@ -32,4 +32,6 @@ function Speed() {
 | `toCanvasPoint`, `MAX_G`, `G_FORCE_RINGS`                                     | Geometry of the g-g diagram: lateral to the right, acceleration upwards, spikes clamped to the rim                            |
 | `toKmh`, `gearLabel`, `lapTime`, `rpmFraction`, `temperatureTone`, `gripTone` | Display rules both dashboards share: units, labels and the bands for tyre temperature and grip                                |
 
+Tests of either dashboard import `createScriptedStore()` and `SAMPLE_FRAME` from `@ft/live-client/testing`: a store on a fake socket that the test plays message by message.
+
 Statuses: `connecting`, `connected` (with the game's state and the frame rate), `waiting` (next attempt and its delay) and `incompatible`. Why it is built this way: [ADR 0004](../../docs/adr/0004-live-dashboard-rendering.md).

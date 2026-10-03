@@ -15,6 +15,11 @@
       "@ft/source": "./src/react.tsx",
       "types": "./dist/react.d.ts",
       "default": "./dist/react.js"
+    },
+    "./testing": {
+      "@ft/source": "./src/testing.ts",
+      "types": "./dist/testing.d.ts",
+      "default": "./dist/testing.js"
     }
   },
   "files": [
