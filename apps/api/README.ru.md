@@ -65,7 +65,9 @@ pnpm replay <запись> --loop       # во втором терминале, 
 
 PostgreSQL через Prisma 7. Схема — [`prisma/schema.prisma`](prisma/schema.prisma), миграции из [`prisma/migrations`](prisma/migrations) применяются командой `pnpm --filter @ft/api db:migrate`. Клиент генерируется в `src/generated` задачей `generate`, которую Turborepo запускает перед build, typecheck, lint и test.
 
-`pnpm --filter @ft/api db:local` поднимает встроенный PostgreSQL (PGlite) по адресу из `.env.example` с данными в `apps/api/.pglite`, так что для разработки Docker не нужен. Новая миграция пишется через `prisma migrate dev --create-only`; ей нужна вторая пустая база в `SHADOW_DATABASE_URL`.
+`pnpm --filter @ft/api db:local` поднимает встроенный PostgreSQL (PGlite) по адресу из `.env.example` с данными в `apps/api/.pglite`, так что для разработки Docker не нужен. `pnpm --filter @ft/api db:import <запись>` добавляет запись в историю так, будто заезд прошёл в момент записи; демо на сервере так показывает в истории тот же заезд, что крутит вживую. Команда запускается из собранного кода и пропускает запись, если за её интервал в истории уже есть сессии.
+
+Новая миграция пишется через `prisma migrate dev --create-only`; ей нужна вторая пустая база в `SHADOW_DATABASE_URL`.
 
 ## Структура
 

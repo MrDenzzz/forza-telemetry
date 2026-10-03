@@ -74,6 +74,14 @@ export class SessionRepository {
     return open.length;
   }
 
+  async hasSessionsStartedBetween(from: Date, to: Date): Promise<boolean> {
+    const found = await this.prisma.session.findFirst({
+      where: { startedAt: { gte: from, lte: to } },
+      select: { id: true },
+    });
+    return found !== null;
+  }
+
   async listSessions({ cursor, limit, kind }: ListSessionsQuery): Promise<SessionPage> {
     // One row beyond the page tells whether another page follows.
     const rows = await this.prisma.session.findMany({

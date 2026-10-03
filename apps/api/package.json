@@ -13,7 +13,8 @@
     "db:migrate": "prisma migrate deploy",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "db:import": "node --env-file-if-exists=.env dist/import.js"
   },
   "dependencies": {
     "@ft/contracts": "workspace:*",

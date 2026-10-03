@@ -65,7 +65,9 @@ Only these derived records are stored, never the packet stream: [ADR 0005](../..
 
 PostgreSQL through Prisma 7. The schema is [`prisma/schema.prisma`](prisma/schema.prisma) and the migrations in [`prisma/migrations`](prisma/migrations) are applied with `pnpm --filter @ft/api db:migrate`. The client is generated into `src/generated` by the `generate` task, which Turborepo runs before build, typecheck, lint and test.
 
-`pnpm --filter @ft/api db:local` serves an embedded PostgreSQL (PGlite) at the URL in `.env.example`, with its data in `apps/api/.pglite`, so no Docker is needed for development. A new migration is written with `prisma migrate dev --create-only`, which needs a second empty database as `SHADOW_DATABASE_URL`.
+`pnpm --filter @ft/api db:local` serves an embedded PostgreSQL (PGlite) at the URL in `.env.example`, with its data in `apps/api/.pglite`, so no Docker is needed for development. `pnpm --filter @ft/api db:import <recording>` adds a recording to the history as if it had been driven when it was recorded; the hosted demo uses it to offer its replayed drive in the history. It runs from the build output and skips a recording whose time span already holds sessions.
+
+A new migration is written with `prisma migrate dev --create-only`, which needs a second empty database as `SHADOW_DATABASE_URL`.
 
 ## Structure
 
