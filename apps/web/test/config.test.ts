@@ -1,13 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { liveUrlFor, loadWebConfig } from '../src/config';
+import { loadWebConfig } from '../src/config';
 
 describe('web config', () => {
-  it('derives the live stream URL from the API URL', () => {
-    expect(liveUrlFor('http://localhost:4000')).toBe('ws://localhost:4000/live');
-    expect(liveUrlFor('https://forza-api.example.com')).toBe('wss://forza-api.example.com/live');
-  });
-
   it('defaults to a local API', () => {
     expect(loadWebConfig({})).toEqual({
       apiUrl: 'http://localhost:4000',

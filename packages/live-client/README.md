@@ -20,12 +20,14 @@ function Speed() {
 </LiveStoreProvider>;
 ```
 
-| Export                                     | Purpose                                                                                                                    |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `LiveConnection`                           | Keeps the socket open: exponential backoff with jitter, validation of every message, stops for good on a protocol mismatch |
-| `LiveStore`                                | Status, latest frame and history, with separate listeners for status and frames                                            |
-| `FrameHistory`                             | Fixed-size ring buffer of recent frames; `columns()` for charts, `recent()` for trails                                     |
-| `LiveStoreProvider`, `useConnectionStatus` | Provide a store and read its status; status-only components ignore frames                                                  |
-| `useFrameValue(select, fallback)`          | One value from the latest frame; re-renders only when that value changes, so `select` returns a primitive                  |
+| Export                                                                        | Purpose                                                                                                                       |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `LiveConnection`                                                              | Keeps the socket open: exponential backoff with jitter, validation of every message, stops for good on a protocol mismatch    |
+| `LiveStore`                                                                   | Status, latest frame and history, with separate listeners for status and frames                                               |
+| `FrameHistory`                                                                | Fixed-size ring buffer of recent frames; `columns()` for charts, `recent()` for trails                                        |
+| `LiveStoreProvider`, `useConnectionStatus`                                    | Provide a store and read its status; status-only components ignore frames                                                     |
+| `useFrameValue(select, fallback)`                                             | One value from the latest frame; re-renders only when that value changes, so `select` returns a primitive                     |
+| `parseApiUrl`, `liveUrlFor`                                                   | Read an API address as typed (`192.168.1.20:4000` becomes `http://…`) and derive the stream's `ws://` or `wss://` URL from it |
+| `toKmh`, `gearLabel`, `lapTime`, `rpmFraction`, `temperatureTone`, `gripTone` | Display rules both dashboards share: units, labels and the bands for tyre temperature and grip                                |
 
 Statuses: `connecting`, `connected` (with the game's state and the frame rate), `waiting` (next attempt and its delay) and `incompatible`. Why it is built this way: [ADR 0004](../../docs/adr/0004-live-dashboard-rendering.md).

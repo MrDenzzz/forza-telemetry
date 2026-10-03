@@ -1,8 +1,8 @@
+import { toKmh } from '@ft/live-client';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
-import { toKmh } from '@/dashboard/format';
 import { historyApi } from '@/history/api';
 import { CarLabel } from '@/history/car-label';
 import { END_REASON_LABELS, KIND_LABELS, distance, duration, gForce } from '@/history/format';

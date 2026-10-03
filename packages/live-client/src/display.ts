@@ -1,4 +1,7 @@
-/** Display helpers. Inputs follow the live contract: SI units, °C, inputs in 0–1. */
+/**
+ * Display helpers shared by the web and mobile dashboards. Inputs follow the live contract: SI
+ * units, °C, inputs in 0–1.
+ */
 
 export const toKmh = (metresPerSecond: number): number => Math.round(metresPerSecond * 3.6);
 

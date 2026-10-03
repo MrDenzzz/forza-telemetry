@@ -1,8 +1,8 @@
 'use client';
 
+import { lapTime } from '@ft/live-client';
 import { useFrameValue } from '@ft/live-client/react';
 
-import { lapTime } from './format';
 import { Panel } from './panel';
 import styles from './race.module.css';
 import { StatList } from './stat-list';

@@ -1,7 +1,7 @@
 import type { SessionSummary } from '@ft/contracts';
+import { lapTime } from '@ft/live-client';
 import Link from 'next/link';
 
-import { lapTime } from '@/dashboard/format';
 import { LocalTime } from '@/ui/local-time';
 
 import { CarLabel } from './car-label';

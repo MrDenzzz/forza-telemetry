@@ -1,9 +1,9 @@
 'use client';
 
 import type { LiveFrame } from '@ft/contracts';
+import { percent } from '@ft/live-client';
 import { useFrameValue } from '@ft/live-client/react';
 
-import { percent } from './format';
 import styles from './inputs.module.css';
 import { Panel } from './panel';
 

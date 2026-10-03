@@ -8,9 +8,9 @@ import {
   rpmFraction,
   temperatureTone,
   toKmh,
-} from '../src/dashboard/format';
+} from '../src/index.ts';
 
-describe('format', () => {
+describe('display helpers', () => {
   it('converts metres per second to whole kilometres per hour', () => {
     expect(toKmh(25)).toBe(90);
     expect(toKmh(99.86)).toBe(359);

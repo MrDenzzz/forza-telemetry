@@ -1,9 +1,9 @@
 'use client';
 
 import type { LiveFrame } from '@ft/contracts';
+import { gripTone, temperatureTone } from '@ft/live-client';
 import { useFrameValue } from '@ft/live-client/react';
 
-import { gripTone, temperatureTone } from './format';
 import { Panel } from './panel';
 import styles from './tires.module.css';
 

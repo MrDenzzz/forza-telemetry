@@ -1,10 +1,10 @@
 import type { LapDetail } from '@ft/contracts';
+import { lapTime } from '@ft/live-client';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
-import { lapTime } from '@/dashboard/format';
 import { historyApi } from '@/history/api';
 import { CarLabel } from '@/history/car-label';
 import { sameRoute } from '@/history/comparison';

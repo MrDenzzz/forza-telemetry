@@ -1,8 +1,8 @@
 'use client';
 
+import { REDLINE_FRACTION, gearLabel, rpmFraction, toKmh } from '@ft/live-client';
 import { useFrameValue } from '@ft/live-client/react';
 
-import { REDLINE_FRACTION, gearLabel, rpmFraction, toKmh } from './format';
 import { Panel } from './panel';
 import styles from './speedometer.module.css';
 

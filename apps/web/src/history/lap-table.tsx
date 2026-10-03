@@ -1,10 +1,9 @@
 'use client';
 
 import type { LapSummary } from '@ft/contracts';
+import { lapTime, toKmh } from '@ft/live-client';
 import Link from 'next/link';
 import { useState } from 'react';
-
-import { lapTime, toKmh } from '@/dashboard/format';
 
 import { delta, gForce } from './format';
 import styles from './history.module.css';
