@@ -33,7 +33,7 @@ The author already rents a small VPS: 2 CPUs, 4 GB of memory, a 30 GB disk. Its 
 - **CI builds the images and publishes them to GHCR.** The server only pulls them:
   - the images are public;
   - they are tagged `latest` and with the commit SHA;
-  - the web image has the public API address compiled in.
+  - they fit any domain: the web container reads the public API address at run time.
 - **The demo video lives on the server's disk**, next to its telemetry track. It is in neither git nor the images. It is encoded as AV1 with an H.264 copy for browsers without AV1. The track is served pre-compressed.
 - **The disk is protected.** Each container's log is capped at 3 × 10 MB through Docker's `local` driver, without changing Docker's own settings. These sites keep no access log, and old images are pruned after an update.
 
@@ -41,7 +41,6 @@ The author already rents a small VPS: 2 CPUs, 4 GB of memory, a 30 GB disk. Its 
 
 - **One machine is a single point of failure.** That is acceptable for a demo. The database holds only the imported drive, which `migrate` recreates, so it needs no backups.
 - **Deploying is a manual `docker compose pull && docker compose up -d`.** No server key is stored in CI. For a demo that changes now and then, that trade is worth it.
-- **The web image is tied to its API address.** Another deployment builds its own image with `PUBLIC_API_URL` set.
 - **The sites are served over HTTP/1.1.** With the nginx 1.18 on the host, `http2` on a listen line would switch the whole port, the existing site included.
 - **The video has to be produced and uploaded by hand.** [docs/deploy.md](../deploy.md) lists the commands: the clip, the offset between video and telemetry, the track export.
 - **The steps are written down** in [docs/deploy.md](../deploy.md), and the nginx config is kept in [deploy/nginx](../../deploy/nginx/forza-telemetry.conf).

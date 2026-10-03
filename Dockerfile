@@ -20,8 +20,6 @@ COPY . .
 # scripts are skipped: building needs none of them, and the root one installs git hooks.
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
     pnpm install --frozen-lockfile --ignore-scripts --filter "@ft/api..." --filter "@ft/web..."
-# The public API address is compiled into the web app.
-ARG NEXT_PUBLIC_API_URL=http://localhost:4000
 RUN pnpm --filter @ft/api generate \
     && pnpm --filter "@ft/api..." --filter "@ft/web..." run build
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \

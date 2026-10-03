@@ -27,7 +27,7 @@ browser ── https ──▶ nginx on the host (:443)
 
 The API records nothing in this mode (`RECORD_SESSIONS=false`), and clients are told the stream is a recording.
 
-CI builds the images on every push to `main` and publishes them to GHCR, tagged `latest` and with the commit SHA. The public API address is compiled into the web image. It comes from the repository variable `PUBLIC_API_URL`, which defaults to `https://forza-api.mrdenzzz.ru`.
+CI builds the images on every push to `main` and publishes them to GHCR, tagged `latest` and with the commit SHA. The images are not tied to a domain: the web container reads the public API address from `PUBLIC_API_URL` in `.env` as it renders a page.
 
 ## Requirements
 
@@ -142,4 +142,4 @@ certbot delete --cert-name forza.mrdenzzz.ru
 ## On another domain
 
 1. Replace the names in the nginx config and in the certbot command.
-2. Build the web image with your API address. Either set the repository variable `PUBLIC_API_URL` for CI, or build on your machine with `PUBLIC_API_URL=https://api.example.com docker compose build`.
+2. Set `PUBLIC_API_URL` in `.env` to your API's address. The images stay the same.

@@ -96,7 +96,6 @@ jobs:
         with:
           context: .
           target: api
-          build-args: NEXT_PUBLIC_API_URL=${{ vars.PUBLIC_API_URL || 'https://forza-api.mrdenzzz.ru' }}
           push: ${{ env.PUBLISH == 'true' }}
           tags: ${{ env.REGISTRY }}-api:latest,${{ env.REGISTRY }}-api:${{ github.sha }}
           cache-from: type=gha
@@ -107,7 +106,6 @@ jobs:
         with:
           context: .
           target: migrate
-          build-args: NEXT_PUBLIC_API_URL=${{ vars.PUBLIC_API_URL || 'https://forza-api.mrdenzzz.ru' }}
           push: ${{ env.PUBLISH == 'true' }}
           tags: ${{ env.REGISTRY }}-migrate:latest,${{ env.REGISTRY }}-migrate:${{ github.sha }}
           cache-from: type=gha
@@ -117,7 +115,6 @@ jobs:
         with:
           context: .
           target: web
-          build-args: NEXT_PUBLIC_API_URL=${{ vars.PUBLIC_API_URL || 'https://forza-api.mrdenzzz.ru' }}
           push: ${{ env.PUBLISH == 'true' }}
           tags: ${{ env.REGISTRY }}-web:latest,${{ env.REGISTRY }}-web:${{ github.sha }}
           cache-from: type=gha
