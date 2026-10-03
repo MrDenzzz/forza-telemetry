@@ -17,3 +17,14 @@ pnpm replay recordings/fh6-2026-10-02T14-44-40.ftr.gz --loop
 | `--loop`           |              | Начинать заново после конца, пока не нажат Ctrl+C      |
 
 Тайминг обеспечивает `replay()` из [`@ft/recording`](../../packages/recording/README.ru.md): время отправки отсчитывается от начала каждого прохода, поэтому гранулярность таймеров Windows не накапливается в дрейф.
+
+## Обрезка записи
+
+`pnpm trim` копирует отрезок записи в новый файл: время в нём отсчитывается с нуля, а время начала сдвигается соответственно. Так из записи, сделанной вместе с видео демо, вырезан заезд для публичного демо:
+
+```sh
+pnpm trim recordings/fh6-2026-10-03T09-58-24.ftr.gz deploy/demo/hokubu-race.ftr.gz \
+  --from 18 --to 214 --note "Demo: Hokubu circuit, 3 laps, Dodge Viper ACR"
+```
+
+`--from` и `--to` — секунды от начала записи; `--note` заменяет её заметку. Работу делает `trimRecording()` из [`@ft/recording`](../../packages/recording/README.ru.md).

@@ -25,6 +25,7 @@
     "format:check": "prettier --check .",
     "record": "node --conditions=@ft/source tools/recorder/src/main.ts",
     "replay": "node --conditions=@ft/source tools/replayer/src/main.ts",
+    "trim": "node --conditions=@ft/source tools/replayer/src/trim.ts",
     "prepare": "lefthook install"
   },
   "devDependencies": {
