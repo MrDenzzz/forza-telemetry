@@ -25,7 +25,7 @@ browser ── https ──▶ nginx on the host (:443)
 | `api`      | `forza-telemetry-api`     | Replays the demo drive in a loop as the live stream (`TELEMETRY_SOURCE=replay`) and serves the history.           |
 | `web`      | `forza-telemetry-web`     | The dashboards, the history and the demo page.                                                                    |
 
-The API records nothing in this mode (`RECORD_SESSIONS=false`), and clients are told the stream is a recording.
+The API records nothing in this mode (`RECORD_SESSIONS=false`), and clients are told the stream is a recording. The drive is [deploy/demo/hokubu-race.ftr.gz](../deploy/demo/hokubu-race.ftr.gz): the race filmed for the demo video, three laps of the Hokubu circuit, cut from its recording with [`pnpm trim`](../tools/replayer/README.md#trimming-a-recording).
 
 CI builds the images on every push to `main` and publishes them to GHCR, tagged `latest` and with the commit SHA. The images are not tied to a domain: the web container reads the public API address from `PUBLIC_API_URL` in `.env` as it renders a page.
 

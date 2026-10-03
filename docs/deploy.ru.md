@@ -25,7 +25,7 @@
 | `api`      | `forza-telemetry-api`     | Проигрывает демо-заезд по кругу как live-поток (`TELEMETRY_SOURCE=replay`) и отдаёт историю.                 |
 | `web`      | `forza-telemetry-web`     | Дашборды, история и страница демо.                                                                           |
 
-В этом режиме API ничего не записывает (`RECORD_SESSIONS=false`), а клиенты знают, что поток — это запись.
+В этом режиме API ничего не записывает (`RECORD_SESSIONS=false`), а клиенты знают, что поток — это запись. Заезд — [deploy/demo/hokubu-race.ftr.gz](../deploy/demo/hokubu-race.ftr.gz): гонка, снятая для видео демо, три круга трассы Hokubu, вырезанная из её записи командой [`pnpm trim`](../tools/replayer/README.ru.md#обрезка-записи).
 
 CI собирает образы на каждый пуш в `main` и публикует их в GHCR с тегами `latest` и SHA коммита. Образы не привязаны к домену: контейнер web берёт публичный адрес API из `PUBLIC_API_URL` в `.env`, когда рендерит страницу.
 

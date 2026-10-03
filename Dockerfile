@@ -24,8 +24,9 @@ RUN pnpm --filter @ft/api generate \
     && pnpm --filter "@ft/api..." --filter "@ft/web..." run build
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
     pnpm --filter @ft/api deploy --prod --ignore-scripts /deploy/api
-# The drive the hosted demo replays live and offers in the history.
-ARG DEMO_RECORDING=apps/api/test/fixtures/circuit-race.ftr.gz
+# The drive the hosted demo replays live and offers in the history: the race filmed for the
+# demo video, cut from its recording (tools/replayer, pnpm trim).
+ARG DEMO_RECORDING=deploy/demo/hokubu-race.ftr.gz
 RUN mkdir /demo && cp "$DEMO_RECORDING" /demo/drive.ftr.gz
 
 FROM node:${NODE_VERSION}-slim AS api
