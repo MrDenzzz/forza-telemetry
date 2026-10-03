@@ -3,6 +3,7 @@
     "name": "Forza Telemetry",
     "slug": "forza-telemetry",
     "version": "0.1.0",
+    "platforms": ["ios", "android"],
     "orientation": "landscape",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0b0d10",

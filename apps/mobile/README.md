@@ -17,9 +17,12 @@ pnpm replay <recording> --loop      # without the game
 
 The first screen asks for the API address and suggests the computer that serves the app, which usually runs the API too. The address is remembered. **Change** in the status line goes back to it.
 
+The app is for Android and iOS only: opening `localhost:8081` in a browser shows the manifest Expo Go reads, not the app.
+
 If the phone cannot connect:
 
-- **Windows firewall.** Windows asks whether to allow Node.js the first time the API listens; allow it on private networks, or allow TCP port 4000 inbound.
+- **Windows firewall.** Windows asks whether to allow Node.js the first time something listens on the network; allow it on private networks, or allow TCP ports 8081 (the bundler) and 4000 (the API) inbound.
+- **No QR code, or it does not open.** In Expo Go, enter `exp://<computer IP>:8081`; `ipconfig` shows the IP.
 - **Guest or office Wi-Fi.** Some networks isolate their clients, so the phone cannot reach the computer at all.
 
 ## How it renders
