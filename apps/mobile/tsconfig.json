@@ -1,0 +1,4 @@
+{
+  "extends": "@ft/tsconfig/expo.json",
+  "include": ["index.ts", "src", "test"]
+}

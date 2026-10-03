@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "Forza Telemetry",
+    "slug": "forza-telemetry",
+    "version": "0.1.0",
+    "orientation": "landscape",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0b0d10",
+    "ios": {
+      "supportsTablet": true,
+      "requireFullScreen": true,
+      "infoPlist": {
+        "NSLocalNetworkUsageDescription": "Connects to the Forza Telemetry API on your local network."
+      }
+    },
+    "android": {
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": ["expo-screen-orientation"]
+  }
+}

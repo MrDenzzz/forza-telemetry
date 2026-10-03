@@ -27,3 +27,5 @@ allowBuilds:
   # Prisma: a Node version check, and the download of the schema engine that Migrate runs.
   '@prisma/engines': true
   prisma: true
+  # Copies the prebuilt Skia binaries that native builds of the mobile app link.
+  '@shopify/react-native-skia': true
