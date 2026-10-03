@@ -8,6 +8,7 @@ import { carSchema } from './car.ts';
  */
 export const LIVE_PROTOCOL_VERSION = 1;
 export const LIVE_PATH = '/live';
+export const LIVE_COURSE_PATH = '/live/course';
 
 const unit = z.number().min(0).max(1);
 
@@ -107,9 +108,19 @@ export const liveServerMessageSchema = z.discriminatedUnion('type', [
   liveFrameMessageSchema,
 ]);
 
+/**
+ * The route of the drive a replaying API plays, seen from above: world X and Z in metres, a point
+ * per 100 ms of driving. Only a recording has one; where the player drives next is not known.
+ */
+export const liveCourseSchema = z.object({
+  xs: z.array(z.number()),
+  zs: z.array(z.number()),
+});
+
 export type LiveFrame = z.infer<typeof liveFrameSchema>;
 export type TelemetryState = z.infer<typeof telemetryStateSchema>;
 export type LiveSource = z.infer<typeof liveSourceSchema>;
+export type LiveCourse = z.infer<typeof liveCourseSchema>;
 export type LiveHelloMessage = z.infer<typeof liveHelloMessageSchema>;
 export type LiveStatusMessage = z.infer<typeof liveStatusMessageSchema>;
 export type LiveFrameMessage = z.infer<typeof liveFrameMessageSchema>;

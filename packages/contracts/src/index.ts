@@ -7,8 +7,10 @@ export {
   type Drivetrain,
 } from './car.ts';
 export {
+  LIVE_COURSE_PATH,
   LIVE_PATH,
   LIVE_PROTOCOL_VERSION,
+  liveCourseSchema,
   liveFrameMessageSchema,
   liveFrameSchema,
   liveHelloMessageSchema,
@@ -17,6 +19,7 @@ export {
   liveStatusMessageSchema,
   parseLiveServerMessage,
   telemetryStateSchema,
+  type LiveCourse,
   type LiveFrame,
   type LiveFrameMessage,
   type LiveHelloMessage,
