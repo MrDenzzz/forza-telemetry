@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { Race } from '../src/dashboard/race';
 import { Speedometer } from '../src/dashboard/speedometer';
-import { StatusBar, describeStatus } from '../src/dashboard/status-bar';
+import { StatusBar } from '../src/dashboard/status-bar';
 import { Tires } from '../src/dashboard/tires';
 
 import { BASE_FRAME, renderLive } from './live-harness';
@@ -35,13 +35,6 @@ describe('StatusBar', () => {
     live.frame(BASE_FRAME);
 
     expect(screen.getByLabelText('Car')).toHaveTextContent('B 600AWDcar #411');
-  });
-
-  it('explains a protocol mismatch', () => {
-    expect(describeStatus({ kind: 'incompatible', serverVersion: 2 })).toEqual({
-      text: 'The API speaks protocol 2, this page expects 1',
-      tone: 'error',
-    });
   });
 });
 

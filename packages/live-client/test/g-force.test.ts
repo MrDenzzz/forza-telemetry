@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { MAX_G, toCanvasPoint } from '../src/dashboard/friction-circle';
+import { MAX_G, toCanvasPoint } from '../src/index.ts';
 
 const CENTER = 100;
 const RADIUS = 80;

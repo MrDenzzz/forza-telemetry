@@ -28,6 +28,8 @@ function Speed() {
 | `LiveStoreProvider`, `useConnectionStatus`                                    | Provide a store and read its status; status-only components ignore frames                                                     |
 | `useFrameValue(select, fallback)`                                             | One value from the latest frame; re-renders only when that value changes, so `select` returns a primitive                     |
 | `parseApiUrl`, `liveUrlFor`                                                   | Read an API address as typed (`192.168.1.20:4000` becomes `http://…`) and derive the stream's `ws://` or `wss://` URL from it |
+| `describeStatus`                                                              | The status line both dashboards show, with its tone                                                                           |
+| `toCanvasPoint`, `MAX_G`, `G_FORCE_RINGS`                                     | Geometry of the g-g diagram: lateral to the right, acceleration upwards, spikes clamped to the rim                            |
 | `toKmh`, `gearLabel`, `lapTime`, `rpmFraction`, `temperatureTone`, `gripTone` | Display rules both dashboards share: units, labels and the bands for tyre temperature and grip                                |
 
 Statuses: `connecting`, `connected` (with the game's state and the frame rate), `waiting` (next attempt and its delay) and `incompatible`. Why it is built this way: [ADR 0004](../../docs/adr/0004-live-dashboard-rendering.md).

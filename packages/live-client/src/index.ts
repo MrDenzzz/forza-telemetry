@@ -19,4 +19,6 @@ export {
   type TemperatureTone,
 } from './display.ts';
 export { FrameHistory } from './frame-history.ts';
+export { G_FORCE_RINGS, MAX_G, toCanvasPoint, type GForcePoint } from './g-force.ts';
 export { LiveStore, type LiveStoreOptions } from './live-store.ts';
+export { describeStatus, type StatusTone } from './status.ts';

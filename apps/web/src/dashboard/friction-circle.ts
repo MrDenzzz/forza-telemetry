@@ -1,36 +1,12 @@
-/** Drawing of the g-g diagram, kept free of React so it can be tested as plain geometry. */
+import { G_FORCE_RINGS, MAX_G, toCanvasPoint, type GForcePoint } from '@ft/live-client';
 
-export interface GForcePoint {
-  readonly lateral: number;
-  readonly longitudinal: number;
-}
+/** Drawing of the g-g diagram on a 2D canvas; the geometry is shared with the mobile app. */
 
 export interface FrictionCirclePalette {
   readonly grid: string;
   readonly trail: string;
   readonly dot: string;
   readonly text: string;
-}
-
-/** Outer ring; road cars rarely exceed it outside of crashes. */
-export const MAX_G = 2;
-const RINGS = [0.5, 1, 1.5, 2] as const;
-
-/**
- * Canvas coordinates for a g-force sample: lateral to the right, accelerating upwards and
- * braking downwards, clamped to the outer ring.
- */
-export function toCanvasPoint(
-  { lateral, longitudinal }: GForcePoint,
-  center: number,
-  radius: number,
-): { x: number; y: number } {
-  const magnitude = Math.hypot(lateral, longitudinal);
-  const scale = magnitude > MAX_G ? MAX_G / magnitude : 1;
-  return {
-    x: center + ((lateral * scale) / MAX_G) * radius,
-    y: center - ((longitudinal * scale) / MAX_G) * radius,
-  };
 }
 
 export function drawFrictionCircle(
@@ -45,7 +21,7 @@ export function drawFrictionCircle(
 
   context.strokeStyle = palette.grid;
   context.lineWidth = 1;
-  for (const ring of RINGS) {
+  for (const ring of G_FORCE_RINGS) {
     context.beginPath();
     context.arc(center, center, (ring / MAX_G) * radius, 0, Math.PI * 2);
     context.stroke();
