@@ -39,13 +39,14 @@ Environment variables are validated once at startup; an invalid value stops the 
 
 ## Interface
 
-| Endpoint                          | Purpose                                                                                                                             |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `GET /health`                     | Liveness, plus the telemetry state and packet counters. A game that is offline does not make the service unhealthy.                 |
-| `WS /live`                        | Server-push stream: `hello` on connect, `status` on every state change, `frame` up to `LIVE_RATE_HZ` times per second while driving |
-| `GET /sessions?cursor&limit&kind` | Sessions, newest first, in pages of `limit` (20 by default, at most 100); `nextCursor` fetches the next page                        |
-| `GET /sessions/:id`               | A session with its laps                                                                                                             |
-| `GET /laps/:id`                   | A lap with its trace: speed, inputs, gear, g-forces and position along the route. Cached for good: a recorded lap never changes     |
+| Endpoint                          | Purpose                                                                                                                                                     |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /health`                     | Liveness, plus the telemetry state and packet counters. A game that is offline does not make the service unhealthy.                                         |
+| `WS /live`                        | Server-push stream: `hello` on connect, `status` on every state change, `frame` up to `LIVE_RATE_HZ` times per second while driving                         |
+| `GET /live/course`                | The route of the replayed drive, for maps: X and Z every 100 ms of driving. Only in demo mode (`TELEMETRY_SOURCE=replay`); 404 while the game is the source |
+| `GET /sessions?cursor&limit&kind` | Sessions, newest first, in pages of `limit` (20 by default, at most 100); `nextCursor` fetches the next page                                                |
+| `GET /sessions/:id`               | A session with its laps                                                                                                                                     |
+| `GET /laps/:id`                   | A lap with its trace: speed, inputs, gear, g-forces and position along the route. Cached for good: a recorded lap never changes                             |
 
 Message and response schemas live in [`@ft/contracts`](../../packages/contracts/README.md). Why the stream works this way: [ADR 0003](../../docs/adr/0003-live-websocket-stream.md); the history API: [ADR 0006](../../docs/adr/0006-history-rest-api.md).
 

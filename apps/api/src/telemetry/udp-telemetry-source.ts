@@ -13,6 +13,7 @@ import type { Datagram, TelemetrySource } from './telemetry-source.ts';
 @Injectable()
 export class UdpTelemetrySource implements TelemetrySource, OnModuleDestroy {
   readonly kind = 'game';
+  readonly course = null;
   readonly #datagrams = new Subject<Datagram>();
   readonly datagrams$ = this.#datagrams.asObservable();
   #socket: Socket | undefined;

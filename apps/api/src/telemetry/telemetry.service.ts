@@ -1,4 +1,4 @@
-import type { LiveSource, TelemetryState } from '@ft/contracts';
+import type { LiveCourse, LiveSource, TelemetryState } from '@ft/contracts';
 import { decodePacket, type DecodeError } from '@ft/telemetry-protocol';
 import { Inject, Injectable, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -75,6 +75,11 @@ export class TelemetryService implements OnModuleInit, OnModuleDestroy {
   /** Whether telemetry comes from the game or from a replayed recording. */
   get sourceKind(): LiveSource {
     return this.source.kind;
+  }
+
+  /** The route of a replayed recording; null while the game is the source. */
+  get course(): LiveCourse | null {
+    return this.source.course;
   }
 
   async onModuleInit(): Promise<void> {

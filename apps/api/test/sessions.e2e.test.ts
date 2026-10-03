@@ -47,6 +47,7 @@ class ManualClock implements Clock {
 class RecordingSource implements TelemetrySource {
   readonly kind = 'game';
   readonly datagrams$ = new Subject<Datagram>();
+  readonly course = null;
   start(): Promise<void> {
     return Promise.resolve();
   }

@@ -1,4 +1,4 @@
-import type { LiveSource } from '@ft/contracts';
+import type { LiveCourse, LiveSource } from '@ft/contracts';
 import type { Observable } from 'rxjs';
 
 export interface Datagram {
@@ -14,6 +14,8 @@ export interface Datagram {
 export interface TelemetrySource {
   readonly kind: LiveSource;
   readonly datagrams$: Observable<Datagram>;
+  /** The route a recording drives, once started; null for the game, whose route is not known. */
+  readonly course: LiveCourse | null;
   /** Starts the source; rejects when it cannot, e.g. a taken port or an unreadable recording. */
   start(): Promise<void>;
 }

@@ -170,6 +170,10 @@ describe('live telemetry, end to end', () => {
     expect(Math.max(...frames().map((frame) => frame.speed))).toBeGreaterThan(5);
   });
 
+  it('has no route to serve while the game is the source', async () => {
+    expect((await fetch(`${baseUrl}/live/course`)).status).toBe(404);
+  });
+
   it('counts packets in the health check, including datagrams that are not telemetry', async () => {
     const fetchHealth = async () =>
       healthResponseSchema.parse(await (await fetch(`${baseUrl}/health`)).json());

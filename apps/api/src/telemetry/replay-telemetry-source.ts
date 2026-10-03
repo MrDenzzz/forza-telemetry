@@ -1,3 +1,4 @@
+import type { LiveCourse } from '@ft/contracts';
 import { readRecordedPackets, readRecordingMetadata, replay } from '@ft/recording';
 import { Inject, Injectable, type OnModuleDestroy } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -5,6 +6,7 @@ import { Subject } from 'rxjs';
 
 import { CLOCK, type Clock } from '../clock.ts';
 import { APP_CONFIG, type AppConfig } from '../config/app-config.ts';
+import { buildCourse } from '../live/course.ts';
 
 import type { Datagram, TelemetrySource } from './telemetry-source.ts';
 
@@ -19,6 +21,7 @@ export class ReplayTelemetrySource implements TelemetrySource, OnModuleDestroy {
   readonly datagrams$ = this.#datagrams.asObservable();
   readonly #stop = new AbortController();
   #playing: Promise<void> | undefined;
+  #course: LiveCourse | null = null;
 
   constructor(
     @Inject(APP_CONFIG) private readonly config: AppConfig,
@@ -33,6 +36,7 @@ export class ReplayTelemetrySource implements TelemetrySource, OnModuleDestroy {
     }
     // Reading the header first makes a missing or foreign file fail the start, not the loop.
     const metadata = await readRecordingMetadata(source.file);
+    this.#course = await buildCourse(readRecordedPackets(source.file));
     this.#playing = replay(
       () => readRecordedPackets(source.file),
       ({ payload }) => {
@@ -49,6 +53,10 @@ export class ReplayTelemetrySource implements TelemetrySource, OnModuleDestroy {
       { file: source.file, recordedAt: metadata.recordedAt, note: metadata.note },
       'Replaying a recording in a loop',
     );
+  }
+
+  get course(): LiveCourse | null {
+    return this.#course;
   }
 
   async onModuleDestroy(): Promise<void> {

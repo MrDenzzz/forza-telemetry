@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 import {
   healthResponseSchema,
+  liveCourseSchema,
   parseLiveServerMessage,
   sessionPageSchema,
   type LiveServerMessage,
@@ -85,6 +86,15 @@ describe('demo mode, end to end', () => {
 
     expect(health.telemetry).toMatchObject({ source: 'recording', state: 'driving' });
     expect(health.telemetry.packets).toBeGreaterThan(0);
+  });
+
+  it('serves the route of the replayed drive', async () => {
+    const response = await fetch(`${baseUrl}/live/course`);
+    const course = liveCourseSchema.parse(await response.json());
+
+    expect(response.headers.get('cache-control')).toBe('public, max-age=300');
+    expect(course.xs.length).toBeGreaterThan(0);
+    expect(course.zs).toHaveLength(course.xs.length);
   });
 
   it('opens no UDP port and records no sessions', async () => {
