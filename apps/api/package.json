@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "db:import": "node --env-file-if-exists=.env dist/import.js"
+    "db:import": "node --env-file-if-exists=.env dist/import.js",
+    "demo:track": "node dist/export-demo-track.js"
   },
   "dependencies": {
     "@ft/contracts": "workspace:*",
