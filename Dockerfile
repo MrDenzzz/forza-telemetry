@@ -15,19 +15,17 @@ ENV PNPM_HOME=/pnpm \
     NEXT_TELEMETRY_DISABLED=1
 RUN npm install --global pnpm@12.8.1
 WORKDIR /repo
-# Downloads depend only on the lockfile, so this layer survives source changes.
-COPY pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm fetch
 COPY . .
-# Only the API, the web app and what they depend on; the mobile app is not built here.
+# Only the API, the web app and what they depend on; the mobile app is not built here. Install
+# scripts are skipped: building needs none of them, and the root one installs git hooks.
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
-    pnpm install --offline --frozen-lockfile --filter "@ft/api..." --filter "@ft/web..."
+    pnpm install --frozen-lockfile --ignore-scripts --filter "@ft/api..." --filter "@ft/web..."
 # The public API address is compiled into the web app.
 ARG NEXT_PUBLIC_API_URL=http://localhost:4000
 RUN pnpm --filter @ft/api generate \
     && pnpm --filter "@ft/api..." --filter "@ft/web..." run build
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
-    pnpm --filter @ft/api deploy --prod /deploy/api
+    pnpm --filter @ft/api deploy --prod --ignore-scripts /deploy/api
 # The drive the hosted demo replays live and offers in the history.
 ARG DEMO_RECORDING=apps/api/test/fixtures/circuit-race.ftr.gz
 RUN mkdir /demo && cp "$DEMO_RECORDING" /demo/drive.ftr.gz
