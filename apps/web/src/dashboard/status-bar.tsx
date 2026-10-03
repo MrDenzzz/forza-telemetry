@@ -25,12 +25,12 @@ function CarBadge() {
   );
 }
 
-export function StatusBar() {
+export function StatusBar({ title = 'Live' }: { title?: string }) {
   const { text, tone } = describeStatus(useConnectionStatus());
 
   return (
     <header className={styles.bar}>
-      <h1 className={styles.title}>Live</h1>
+      <h1 className={styles.title}>{title}</h1>
       <p className={styles.status} data-tone={tone} role="status">
         {text}
       </p>

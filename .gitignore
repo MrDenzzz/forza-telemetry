@@ -29,3 +29,6 @@ next-env.d.ts
 
 # Local embedded database (pnpm --filter @ft/api db:local)
 .pglite/
+
+# Demo video and track for local development (served by nginx in production)
+apps/web/public/media/

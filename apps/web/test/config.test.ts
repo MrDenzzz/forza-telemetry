@@ -8,6 +8,7 @@ describe('web config', () => {
       apiUrl: 'http://localhost:4000',
       serverApiUrl: 'http://localhost:4000',
       liveUrl: 'ws://localhost:4000/live',
+      demoMediaUrl: '/media/demo',
     });
   });
 
@@ -21,6 +22,7 @@ describe('web config', () => {
       apiUrl: 'https://forza-api.example.com',
       serverApiUrl: 'http://api:4000',
       liveUrl: 'wss://forza-api.example.com/live',
+      demoMediaUrl: '/media/demo',
     });
   });
 

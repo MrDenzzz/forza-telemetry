@@ -11,5 +11,7 @@ const apiUrlSchema = z.url({ protocol: /^https?$/ });
 export function loadWebConfig(env: Readonly<Record<string, string | undefined>>) {
   const apiUrl = apiUrlSchema.parse(env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000');
   const serverApiUrl = apiUrlSchema.parse(env.API_URL ?? apiUrl);
-  return { apiUrl, serverApiUrl, liveUrl: liveUrlFor(apiUrl) };
+  // The demo video and its telemetry track are served next to the app, not from git.
+  const demoMediaUrl = env.NEXT_PUBLIC_DEMO_MEDIA_URL ?? '/media/demo';
+  return { apiUrl, serverApiUrl, liveUrl: liveUrlFor(apiUrl), demoMediaUrl };
 }

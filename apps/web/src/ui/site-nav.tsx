@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import styles from './site-header.module.css';
 
 const LINKS = [
+  { href: '/demo', label: 'Demo', matches: (path: string) => path === '/demo' },
   { href: '/', label: 'Live', matches: (path: string) => path === '/' },
   {
     href: '/sessions',
