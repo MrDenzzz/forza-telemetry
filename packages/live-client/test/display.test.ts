@@ -11,9 +11,10 @@ import {
 } from '../src/index.ts';
 
 describe('display helpers', () => {
-  it('converts metres per second to whole kilometres per hour', () => {
+  it('converts metres per second to whole kilometres per hour, dropping the fraction as the game does', () => {
     expect(toKmh(25)).toBe(90);
-    expect(toKmh(99.86)).toBe(359);
+    expect(toKmh(61 / 3.6)).toBe(61);
+    expect(toKmh(51.38)).toBe(184);
   });
 
   it.each([

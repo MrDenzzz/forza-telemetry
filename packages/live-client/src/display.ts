@@ -3,7 +3,12 @@
  * units, °C, inputs in 0–1.
  */
 
-export const toKmh = (metresPerSecond: number): number => Math.round(metresPerSecond * 3.6);
+/**
+ * Whole km/h, with the fraction dropped as the game's own speedometer does, so that the two agree
+ * side by side. The tiny bias keeps a whole speed, such as 61 / 3.6 m/s (× 3.6 = 60.99999999999999),
+ * from losing a unit.
+ */
+export const toKmh = (metresPerSecond: number): number => Math.floor(metresPerSecond * 3.6 + 1e-9);
 
 export function gearLabel(gear: number): string {
   if (gear < 0) {
