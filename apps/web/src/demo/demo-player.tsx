@@ -10,9 +10,9 @@ import { GForce } from '@/dashboard/g-force';
 import { Inputs } from '@/dashboard/inputs';
 import { Race } from '@/dashboard/race';
 import { RouteMap } from '@/dashboard/route-map';
+import { RouteTrace } from '@/dashboard/route-trace';
 import { Speedometer } from '@/dashboard/speedometer';
 import { StatusBar } from '@/dashboard/status-bar';
-import { Tires } from '@/dashboard/tires';
 
 import styles from './demo-player.module.css';
 import { VideoTelemetry } from './video-telemetry';
@@ -22,6 +22,7 @@ const clock = (seconds: number): string => lapTime(Math.max(0.001, seconds)).sli
 
 function DemoStage({ track, mediaUrl }: { track: DemoTrack; mediaUrl: string }) {
   const [telemetry] = useState(() => new VideoTelemetry(track));
+  const [course] = useState(() => RouteTrace.of(track.frames.map(([, frame]) => frame)));
   const [store] = useState(
     () =>
       new LiveStore({
@@ -80,7 +81,12 @@ function DemoStage({ track, mediaUrl }: { track: DemoTrack; mediaUrl: string }) 
             setPlaying(false);
           }}
         >
-          <source src={`${mediaUrl}/demo-1080p60.av1.webm`} type='video/webm; codecs="av01"' />
+          {/* The full codec string (Main profile, level 4.1, 10-bit), as browsers turn down a bare
+              "av01" and would fall back to the H.264 copy. It must match how the file is encoded. */}
+          <source
+            src={`${mediaUrl}/demo-1080p60.av1.webm`}
+            type='video/webm; codecs="av01.0.09M.10"'
+          />
           <source src={`${mediaUrl}/demo-720p60.h264.mp4`} type="video/mp4" />
         </video>
         <div className={styles.overlay}>
@@ -94,8 +100,7 @@ function DemoStage({ track, mediaUrl }: { track: DemoTrack; mediaUrl: string }) 
           </div>
           <div className={styles.right}>
             <GForce />
-            <RouteMap />
-            <Tires />
+            <RouteMap outline={course} />
           </div>
           <div className={styles.controls}>
             <button

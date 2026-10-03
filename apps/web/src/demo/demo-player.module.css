@@ -71,6 +71,13 @@
   max-height: calc(100% - 140px);
 }
 
+/* The two square canvases shrink with the window's height so that both panels fit above it. */
+.right canvas {
+  width: clamp(120px, calc((100svh - 480px) / 2), 220px);
+  height: auto;
+  aspect-ratio: 1;
+}
+
 .controls {
   grid-area: controls;
   display: flex;
@@ -111,6 +118,21 @@
   margin: 0 auto;
   padding: 16px;
   color: var(--color-muted);
+}
+
+/* In windows of a laptop's height the side panels scale down as a whole instead of being cut off. */
+@media (min-width: 901px) and (max-height: 860px) {
+  .left,
+  .right {
+    zoom: 0.85;
+  }
+}
+
+@media (min-width: 901px) and (max-height: 740px) {
+  .left,
+  .right {
+    zoom: 0.72;
+  }
 }
 
 /* On narrow screens the video sits on top and the panels follow below it. */
