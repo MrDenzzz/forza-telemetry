@@ -2,7 +2,9 @@ export {
   createRecordingWriter,
   readRecordedPackets,
   readRecordingMetadata,
+  trimRecording,
   type RecordingWriter,
+  type TrimOptions,
 } from './file.ts';
 export {
   FORMAT_VERSION,

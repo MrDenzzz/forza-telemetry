@@ -55,6 +55,47 @@ export async function createRecordingWriter(
   };
 }
 
+export interface TrimOptions {
+  /** Seconds into the recording at which the copy starts. */
+  readonly from: number;
+  /** Seconds into the recording at which the copy ends. */
+  readonly to: number;
+  /** Replaces the recording's note. */
+  readonly note?: string;
+}
+
+/**
+ * Copies the part of a recording between `from` and `to` into a new file. Its times start over
+ * at zero and its start time moves to match, so the copy reads as if it had been recorded alone.
+ * Resolves to the number of packets copied.
+ */
+export async function trimRecording(
+  input: string,
+  output: string,
+  { from, to, note }: TrimOptions,
+): Promise<number> {
+  const metadata = await readRecordingMetadata(input);
+  const startMs = from * 1000;
+  const endMs = to * 1000;
+  const writer = await createRecordingWriter(output, {
+    ...metadata,
+    recordedAt: new Date(Date.parse(metadata.recordedAt) + startMs).toISOString(),
+    ...(note === undefined ? {} : { note }),
+  });
+  let copied = 0;
+  for await (const { elapsedMs, payload } of readRecordedPackets(input)) {
+    if (elapsedMs > endMs) {
+      break;
+    }
+    if (elapsedMs >= startMs) {
+      writer.write({ elapsedMs: elapsedMs - startMs, payload });
+      copied += 1;
+    }
+  }
+  await writer.close();
+  return copied;
+}
+
 export async function readRecordingMetadata(path: string): Promise<RecordingMetadata> {
   const decoder = new RecordingDecoder();
   for await (const chunk of openChunks(path)) {

@@ -9,6 +9,7 @@ import {
   createRecordingWriter,
   readRecordedPackets,
   readRecordingMetadata,
+  trimRecording,
   type RecordedPacket,
   type RecordingMetadata,
 } from '../src/index.ts';
@@ -83,6 +84,30 @@ describe('recording files', () => {
     }
 
     expect(first).toEqual(PACKETS.slice(0, 3));
+  });
+
+  it('trims a recording to a stretch that reads as if recorded alone', async () => {
+    const input = join(directory, 'session.ftr.gz');
+    const output = join(directory, 'stretch.ftr.gz');
+    const writer = await createRecordingWriter(input, { ...METADATA, note: 'Whole session' });
+    PACKETS.forEach((packet) => {
+      writer.write(packet);
+    });
+    await writer.close();
+
+    // Packets come every 16.67 ms: 1 s to 2 s holds indices 60 to 119.
+    const copied = await trimRecording(input, output, { from: 1, to: 2, note: 'One second' });
+    const packets = await collect(readRecordedPackets(output));
+
+    expect(copied).toBe(60);
+    expect(await readRecordingMetadata(output)).toEqual({
+      game: 'fh6',
+      recordedAt: '2026-10-02T12:00:01.000Z',
+      note: 'One second',
+    });
+    expect(packets).toHaveLength(60);
+    expect(packets[0]?.elapsedMs).toBeCloseTo(60 * 16.67 - 1000);
+    expect(packets[0]?.payload).toEqual(PACKETS[60]?.payload);
   });
 
   it('rejects a file that ends inside the header', async () => {
