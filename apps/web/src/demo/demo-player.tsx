@@ -49,9 +49,57 @@ function DemoStage({ track, mediaUrl }: { track: DemoTrack; mediaUrl: string }) 
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrubberRef = useRef<HTMLInputElement>(null);
   const timeRef = useRef<HTMLSpanElement>(null);
-  const [playing, setPlaying] = useState(true);
-  // Browsers start a video by themselves only while it is muted; the sound is the viewer's choice.
-  const [muted, setMuted] = useState(true);
+  const soundButtonRef = useRef<HTMLButtonElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(false);
+  // While the browser holds the sound back until the viewer's first gesture on the site.
+  const [soundBlocked, setSoundBlocked] = useState(false);
+
+  // The demo plays with its sound. Until the viewer has interacted with the site, browsers allow
+  // only muted playback; then it starts muted, and the sound comes on with the first click or key.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) {
+      return;
+    }
+    let active = true;
+    video.muted = false;
+    video.play().catch(() => {
+      if (!active) {
+        return;
+      }
+      video.muted = true;
+      // Still refused (a power-saving mode, say): the play button is there.
+      video.play().catch(() => undefined);
+      setSoundBlocked(true);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!soundBlocked) {
+      return;
+    }
+    // A click rather than a pointerdown: on touch screens only the click counts as a gesture, and
+    // unmuting without one would pause the video instead. The sound button decides on its own.
+    const unmute = (event: Event) => {
+      if (event.target instanceof Node && soundButtonRef.current?.contains(event.target)) {
+        return;
+      }
+      if (videoRef.current) {
+        videoRef.current.muted = false;
+      }
+      setSoundBlocked(false);
+    };
+    document.addEventListener('click', unmute, true);
+    document.addEventListener('keydown', unmute, true);
+    return () => {
+      document.removeEventListener('click', unmute, true);
+      document.removeEventListener('keydown', unmute, true);
+    };
+  }, [soundBlocked]);
 
   // The video is the clock: each animation frame hands the telemetry its current time. The
   // scrubber and the time follow through the DOM, so playback re-renders nothing.
@@ -85,8 +133,6 @@ function DemoStage({ track, mediaUrl }: { track: DemoTrack; mediaUrl: string }) 
           <video
             ref={videoRef}
             className={styles.video}
-            autoPlay
-            muted
             loop
             playsInline
             preload="auto"
@@ -158,13 +204,16 @@ function DemoStage({ track, mediaUrl }: { track: DemoTrack; mediaUrl: string }) 
                 0:00
               </span>
               <span className={styles.duration}>/ {clock(track.durationSeconds)}</span>
+              {soundBlocked && <span className={styles.hint}>Tap or click anywhere for sound</span>}
               <button
+                ref={soundButtonRef}
                 type="button"
                 className={styles.button}
                 onClick={() => {
                   if (videoRef.current) {
                     videoRef.current.muted = !videoRef.current.muted;
                   }
+                  setSoundBlocked(false);
                 }}
                 aria-label="Sound"
                 aria-pressed={!muted}

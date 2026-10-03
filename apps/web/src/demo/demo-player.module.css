@@ -97,6 +97,7 @@
 }
 
 .controls {
+  position: relative;
   grid-area: controls;
   display: flex;
   align-items: center;
@@ -124,6 +125,20 @@
 .button[aria-pressed='false'] {
   color: var(--color-text);
   background: rgb(255 255 255 / 12%);
+}
+
+/* Floats above the sound button, so that the controls keep their layout. */
+.hint {
+  position: absolute;
+  right: 8px;
+  bottom: calc(100% + 8px);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  color: var(--color-bg);
+  background: var(--color-accent);
+  pointer-events: none;
 }
 
 .scrubber {
