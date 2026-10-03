@@ -13,6 +13,13 @@ x-build: &build
   args:
     NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:4000}
 
+# Docker keeps what containers print forever by default; on a small server that fills the disk.
+x-logging: &logging
+  driver: local
+  options:
+    max-size: 10m
+    max-file: '3'
+
 x-database-url: &database-url postgresql://forza:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/forza
 
 services:
@@ -30,6 +37,7 @@ services:
       timeout: 3s
       retries: 20
     restart: unless-stopped
+    logging: *logging
 
   migrate:
     image: ghcr.io/mrdenzzz/forza-telemetry-migrate:${IMAGE_TAG:-latest}
@@ -43,6 +51,7 @@ services:
       postgres:
         condition: service_healthy
     restart: 'no'
+    logging: *logging
 
   api:
     image: ghcr.io/mrdenzzz/forza-telemetry-api:${IMAGE_TAG:-latest}
@@ -60,6 +69,7 @@ services:
       migrate:
         condition: service_completed_successfully
     restart: unless-stopped
+    logging: *logging
 
   web:
     image: ghcr.io/mrdenzzz/forza-telemetry-web:${IMAGE_TAG:-latest}
@@ -74,6 +84,7 @@ services:
       api:
         condition: service_healthy
     restart: unless-stopped
+    logging: *logging
 
 volumes:
   postgres:
