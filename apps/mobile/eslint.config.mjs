@@ -7,10 +7,15 @@ export default defineConfig(
   react(import.meta.dirname),
   {
     // Metro and Jest load their configs as CommonJS.
-    files: ['*.config.js'],
+    files: ['*.config.js', 'test/*.js'],
     languageOptions: {
       sourceType: 'commonjs',
-      globals: { require: 'readonly', module: 'writable', __dirname: 'readonly' },
+      globals: {
+        require: 'readonly',
+        module: 'writable',
+        __dirname: 'readonly',
+        process: 'readonly',
+      },
     },
     rules: { '@typescript-eslint/no-require-imports': 'off' },
   },

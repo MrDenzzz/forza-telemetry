@@ -2,7 +2,7 @@
 module.exports = {
   preset: 'jest-expo',
   // Picks the JavaScript implementation of worklets instead of the native one.
-  resolver: 'react-native-worklets/jest/resolver.js',
+  resolver: '<rootDir>/test/jest-resolver.js',
   setupFiles: ['<rootDir>/test/setup.ts'],
   // Failures become annotations on the pull request, as Vitest's do in the other packages.
   reporters: process.env.GITHUB_ACTIONS ? ['default', 'github-actions'] : ['default'],
