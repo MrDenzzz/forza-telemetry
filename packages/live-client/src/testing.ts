@@ -1,4 +1,9 @@
-import { LIVE_PROTOCOL_VERSION, type LiveFrame, type TelemetryState } from '@ft/contracts';
+import {
+  LIVE_PROTOCOL_VERSION,
+  type LiveFrame,
+  type LiveSource,
+  type TelemetryState,
+} from '@ft/contracts';
 
 import type { WebSocketLike } from './connection.ts';
 import { LiveStore } from './live-store.ts';
@@ -40,7 +45,7 @@ export const SAMPLE_FRAME: LiveFrame = {
 
 export interface ScriptedStore {
   readonly store: LiveStore;
-  readonly hello: (state?: TelemetryState) => void;
+  readonly hello: (state?: TelemetryState, source?: LiveSource) => void;
   readonly status: (state: TelemetryState) => void;
   readonly frame: (frame: LiveFrame) => void;
   readonly disconnect: () => void;
@@ -65,8 +70,8 @@ export function createScriptedStore(): ScriptedStore {
 
   return {
     store,
-    hello: (state = 'driving') => {
-      receive({ type: 'hello', protocolVersion: LIVE_PROTOCOL_VERSION, rateHz: 30, state });
+    hello: (state = 'driving', source = 'game') => {
+      receive({ type: 'hello', protocolVersion: LIVE_PROTOCOL_VERSION, rateHz: 30, state, source });
     },
     status: (state) => {
       receive({ type: 'status', state });

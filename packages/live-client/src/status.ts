@@ -20,6 +20,11 @@ export function describeStatus(status: ConnectionStatus): { text: string; tone: 
         tone: 'error',
       };
     case 'connected':
+      if (status.source === 'recording') {
+        return status.state === 'driving'
+          ? { text: `Replaying a recorded drive at ${String(status.rateHz)} Hz`, tone: 'ok' }
+          : { text: 'Replaying a recorded drive: not driving in this part', tone: 'muted' };
+      }
       switch (status.state) {
         case 'offline':
           return { text: 'Waiting for the game: no telemetry arriving', tone: 'warning' };

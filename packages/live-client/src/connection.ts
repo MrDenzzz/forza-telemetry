@@ -2,6 +2,7 @@ import {
   LIVE_PROTOCOL_VERSION,
   parseLiveServerMessage,
   type LiveFrame,
+  type LiveSource,
   type TelemetryState,
 } from '@ft/contracts';
 
@@ -17,8 +18,13 @@ export interface WebSocketLike {
 export type ConnectionStatus =
   /** Opening a socket; `attempt` counts consecutive failures before it. */
   | { readonly kind: 'connecting'; readonly attempt: number }
-  /** The server said hello; `state` follows the game. */
-  | { readonly kind: 'connected'; readonly state: TelemetryState; readonly rateHz: number }
+  /** The server said hello; `state` follows the game or the recording it replays. */
+  | {
+      readonly kind: 'connected';
+      readonly state: TelemetryState;
+      readonly rateHz: number;
+      readonly source: LiveSource;
+    }
   /** Disconnected; the next attempt starts in `retryInMs`. */
   | { readonly kind: 'waiting'; readonly attempt: number; readonly retryInMs: number }
   /** The server speaks another protocol version; retrying would not help. */
@@ -71,6 +77,7 @@ export class LiveConnection {
   #failures = 0;
   #stopped = true;
   #rateHz = 0;
+  #source: LiveSource = 'game';
 
   constructor(options: LiveConnectionOptions) {
     this.#options = options;
@@ -122,14 +129,21 @@ export class LiveConnection {
       case 'hello':
         this.#failures = 0;
         this.#rateHz = message.rateHz;
+        this.#source = message.source;
         this.#options.onStatus({
           kind: 'connected',
           state: message.state,
           rateHz: message.rateHz,
+          source: message.source,
         });
         break;
       case 'status':
-        this.#options.onStatus({ kind: 'connected', state: message.state, rateHz: this.#rateHz });
+        this.#options.onStatus({
+          kind: 'connected',
+          state: message.state,
+          rateHz: this.#rateHz,
+          source: this.#source,
+        });
         break;
       case 'frame':
         this.#options.onFrame(message.frame);

@@ -70,9 +70,24 @@ describe('LiveConnection', () => {
 
     expect(statuses).toEqual([
       { kind: 'connecting', attempt: 0 },
-      { kind: 'connected', state: 'idle', rateHz: 30 },
-      { kind: 'connected', state: 'driving', rateHz: 30 },
+      { kind: 'connected', state: 'idle', rateHz: 30, source: 'game' },
+      { kind: 'connected', state: 'driving', rateHz: 30, source: 'game' },
     ]);
+  });
+
+  it('keeps the source announced in the hello through later status changes', () => {
+    const { connection, statuses, socket } = setup();
+
+    connection.start();
+    socket().receive({ ...HELLO, source: 'recording' });
+    socket().receive({ type: 'status', state: 'driving' });
+
+    expect(statuses.at(-1)).toEqual({
+      kind: 'connected',
+      state: 'driving',
+      rateHz: 30,
+      source: 'recording',
+    });
   });
 
   it('ignores messages that do not match the contract', () => {
@@ -84,7 +99,12 @@ describe('LiveConnection', () => {
     socket().receive({ type: 'frame', frame: { speed: 'fast' } });
 
     expect(frames).toEqual([]);
-    expect(statuses.at(-1)).toEqual({ kind: 'connected', state: 'idle', rateHz: 30 });
+    expect(statuses.at(-1)).toEqual({
+      kind: 'connected',
+      state: 'idle',
+      rateHz: 30,
+      source: 'game',
+    });
   });
 
   it('reconnects with exponential backoff and resets it after a successful hello', () => {
