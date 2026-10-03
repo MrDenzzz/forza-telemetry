@@ -52,7 +52,11 @@ RUN apt-get update \
     && apt-get install --yes --no-install-recommends openssl \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /migrate
-RUN npm init --yes > /dev/null && npm install --no-fund --no-audit "prisma@${PRISMA_VERSION}"
+ENV NPM_CONFIG_UPDATE_NOTIFIER=false
+# npm's download cache would add another 300 MB to the layer.
+RUN npm init --yes > /dev/null \
+    && npm install --no-fund --no-audit "prisma@${PRISMA_VERSION}" \
+    && npm cache clean --force
 COPY --from=build --chown=node:node /deploy/api/prisma ./prisma
 COPY --from=build --chown=node:node /deploy/api/prisma.config.ts ./
 USER node
