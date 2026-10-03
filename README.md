@@ -55,6 +55,14 @@ pnpm replay recordings/<file>.ftr.gz --loop       # without the game: replay a r
 
 The dashboard follows the game live. The API streams over WebSocket at `ws://localhost:4000/live`, records sessions and laps into the database, serves them at `GET /sessions`, and reports on `GET /health` whether the game is sending. Any PostgreSQL works in place of `db:local`: set `DATABASE_URL` in `apps/api/.env`. Details: [dashboard](apps/web/README.md), [API](apps/api/README.md).
 
+## On a phone
+
+```sh
+pnpm --filter @ft/mobile start                   # scan the QR code with Expo Go (SDK 57) on the same Wi-Fi
+```
+
+The app is a landscape dashboard with the same live data; it suggests this computer as the API address. Details, including the Windows firewall: [mobile app](apps/mobile/README.md).
+
 ## Recording and replaying
 
 The game streams only while you drive, so development, tests and the hosted demo run on recordings.
