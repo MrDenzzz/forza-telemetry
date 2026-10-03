@@ -76,4 +76,4 @@ export function createHistoryApi(
   };
 }
 
-export const historyApi = createHistoryApi(loadWebConfig(process.env).apiUrl);
+export const historyApi = createHistoryApi(loadWebConfig(process.env).serverApiUrl);

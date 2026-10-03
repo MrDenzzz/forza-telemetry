@@ -3,8 +3,13 @@ import { z } from 'zod';
 
 const apiUrlSchema = z.url({ protocol: /^https?$/ });
 
-/** Read at build time; an invalid URL fails the build rather than the browser. */
+/**
+ * The public API URL is read at build time, so an invalid one fails the build rather than the
+ * browser. Server components may reach the API another way, e.g. inside a Docker network, through
+ * API_URL, which is read when the server runs.
+ */
 export function loadWebConfig(env: Readonly<Record<string, string | undefined>>) {
   const apiUrl = apiUrlSchema.parse(env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000');
-  return { apiUrl, liveUrl: liveUrlFor(apiUrl) };
+  const serverApiUrl = apiUrlSchema.parse(env.API_URL ?? apiUrl);
+  return { apiUrl, serverApiUrl, liveUrl: liveUrlFor(apiUrl) };
 }

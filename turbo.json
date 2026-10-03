@@ -10,7 +10,7 @@
     "build": {
       "dependsOn": ["^build", "generate"],
       "env": ["NEXT_PUBLIC_*"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "!.next/standalone/**"]
     },
     "transit": {
       "dependsOn": ["^transit"]
