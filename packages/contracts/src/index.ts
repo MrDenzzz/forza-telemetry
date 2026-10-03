@@ -26,6 +26,7 @@ export {
   type ParseResult,
   type TelemetryState,
 } from './live.ts';
+export { demoTrackSchema, type DemoTrack } from './demo.ts';
 export { healthResponseSchema, type HealthResponse } from './health.ts';
 export {
   LAP_TRACE_CHANNELS,
