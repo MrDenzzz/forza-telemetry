@@ -1,16 +1,27 @@
 /*
- * The video fills the stage; the dashboard's panels float over it, translucent, along the sides,
- * leaving the middle and the game's own speedometer (bottom right) in view.
+ * The video is shown whole, at 16:9, as large as the window allows and running under the
+ * translucent site header. The dashboard's panels float over it along the sides, leaving the
+ * middle and the game's own speedometer (bottom right) in view. Panel sizes follow the stage's
+ * height (cqh), not the window's: the stage is the video.
  */
+.theater {
+  display: grid;
+  place-items: center;
+  height: 100svh;
+  min-height: 560px;
+  margin-top: calc(-1 * var(--header-height));
+  overflow: hidden;
+  background: #000;
+}
+
 .stage {
   --color-panel: rgb(14 16 20 / 72%);
   --color-panel-border: rgb(255 255 255 / 12%);
 
   position: relative;
-  height: calc(100svh - 56px);
-  min-height: 560px;
-  overflow: hidden;
-  background: #000;
+  width: min(100%, 100svh * 16 / 9);
+  aspect-ratio: 16 / 9;
+  container-type: size;
 }
 
 .video {
@@ -18,10 +29,13 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .overlay {
+  /* The black band above the video when the window is narrower than 16:9. */
+  --letterbox: calc((100svh - 100cqh) / 2);
+
   position: absolute;
   inset: 0;
   display: grid;
@@ -32,7 +46,8 @@
     'left . right'
     'controls controls controls';
   gap: var(--gap);
-  padding: 16px;
+  /* Clears the site header where it covers the video. */
+  padding: max(16px, var(--header-height) + 12px - var(--letterbox)) 16px 16px;
   pointer-events: none;
 }
 
@@ -65,15 +80,18 @@
   grid-area: left;
 }
 
-/* Stops short of the bottom, where the game draws its speedometer. */
+/*
+ * Ends at two thirds of the picture's height: the game's speedometer below takes its bottom 31%.
+ * (The column's area already stops 76px short of the bottom, above the controls.)
+ */
 .right {
   grid-area: right;
-  max-height: calc(100% - 140px);
+  max-height: calc(100% - 33cqh + 76px);
 }
 
-/* The two square canvases shrink with the window's height so that both panels fit above it. */
+/* The two square canvases shrink with the stage so that both panels fit in that column. */
 .right canvas {
-  width: clamp(120px, calc((100svh - 480px) / 2), 220px);
+  width: clamp(100px, 33.5cqh - 128px, 220px);
   height: auto;
   aspect-ratio: 1;
 }
@@ -92,7 +110,8 @@
   backdrop-filter: blur(6px);
 }
 
-.play {
+.button {
+  flex: none;
   width: 32px;
   height: 32px;
   border: none;
@@ -102,8 +121,14 @@
   cursor: pointer;
 }
 
+.button[aria-pressed='false'] {
+  color: var(--color-text);
+  background: rgb(255 255 255 / 12%);
+}
+
 .scrubber {
   flex: 1;
+  min-width: 0;
   accent-color: var(--color-accent);
 }
 
@@ -120,33 +145,56 @@
   color: var(--color-muted);
 }
 
-/* In windows of a laptop's height the side panels scale down as a whole instead of being cut off. */
-@media (min-width: 901px) and (max-height: 860px) {
-  .left,
-  .right {
+/*
+ * On a stage of a laptop's height the left column scales down as a whole instead of being cut off.
+ * The right one needs no such steps: its canvases already shrink with the stage.
+ */
+@container (max-height: 880px) {
+  .left {
     zoom: 0.85;
   }
 }
 
-@media (min-width: 901px) and (max-height: 740px) {
-  .left,
-  .right {
-    zoom: 0.72;
+@container (max-height: 800px) {
+  .left {
+    zoom: 0.78;
+  }
+}
+
+@container (max-height: 740px) {
+  .left {
+    zoom: 0.7;
+  }
+}
+
+@container (max-height: 680px) {
+  .left {
+    zoom: 0.62;
   }
 }
 
 /* On narrow screens the video sits on top and the panels follow below it. */
 @media (max-width: 900px) {
-  .stage {
+  .theater {
+    display: block;
     height: auto;
     min-height: 0;
+    margin-top: 0;
     overflow: visible;
+    background: none;
+  }
+
+  .stage {
+    width: auto;
+    aspect-ratio: auto;
+    container-type: normal;
   }
 
   .video {
     position: static;
     aspect-ratio: 16 / 9;
     height: auto;
+    background: #000;
   }
 
   .overlay {
@@ -157,10 +205,15 @@
       'top'
       'left'
       'right';
+    padding: 16px;
     background: var(--color-bg);
   }
 
   .right {
     max-height: none;
+  }
+
+  .right canvas {
+    width: 220px;
   }
 }
