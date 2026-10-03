@@ -43,4 +43,13 @@ export class RouteTrace {
     this.zs.length = 0;
     this.#lastAt = -Infinity;
   }
+
+  /** The route of a whole recorded drive, collected the same way. */
+  static of(frames: Iterable<LiveFrame>): RouteTrace {
+    const trace = new RouteTrace();
+    for (const frame of frames) {
+      trace.push(frame);
+    }
+    return trace;
+  }
 }

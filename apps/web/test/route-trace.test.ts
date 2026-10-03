@@ -35,3 +35,11 @@ describe('RouteTrace', () => {
     expect(trace.xs).toEqual([frame.position.x]);
   });
 });
+
+describe('RouteTrace.of', () => {
+  it('collects a whole recorded drive the way a live trace would', () => {
+    const frames = [0, 50, 100, 150, 200].map((ms, index) => at(ms, index));
+
+    expect(RouteTrace.of(frames).xs).toEqual([0, 2, 4]);
+  });
+});
