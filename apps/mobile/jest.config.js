@@ -4,6 +4,8 @@ module.exports = {
   // Picks the JavaScript implementation of worklets instead of the native one.
   resolver: 'react-native-worklets/jest/resolver.js',
   setupFiles: ['<rootDir>/test/setup.ts'],
+  // Failures become annotations on the pull request, as Vitest's do in the other packages.
+  reporters: process.env.GITHUB_ACTIONS ? ['default', 'github-actions'] : ['default'],
   // pnpm keeps packages under node_modules/.pnpm, and React Native ones ship untranspiled.
   transformIgnorePatterns: [
     'node_modules/(?!(.pnpm|(jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@shopify/react-native-skia))',
