@@ -11,11 +11,13 @@ Next.js app with two parts:
 pnpm dev    # from the repository root: API on :4000 and dashboard on http://localhost:3000
 ```
 
-| Variable              | Default                 | Meaning                                                                           |
-| --------------------- | ----------------------- | --------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_API_URL` | `http://localhost:4000` | API base URL; the live stream is derived from it (`http` → `ws`, `https` → `wss`) |
+| Variable                     | Default                 | Meaning                                                                                                                                             |
+| ---------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`        | `http://localhost:4000` | API base URL; the live stream is derived from it (`http` → `ws`, `https` → `wss`)                                                                   |
+| `API_URL`                    | `NEXT_PUBLIC_API_URL`   | The API as the server reaches it, for the history and the replayed course, when that differs from the public address (in Docker: `http://api:4000`) |
+| `NEXT_PUBLIC_DEMO_MEDIA_URL` | `/media/demo`           | Where the demo page finds its video, poster and telemetry track ([docs/deploy.md](../../docs/deploy.md#3-the-demo-media))                           |
 
-The value is validated and inlined at build time, so an invalid URL fails the build. The history pages read the API from the server with the same URL.
+The API addresses are read and validated on the server as pages render, so one image serves any domain; a malformed URL makes the pages that use it fail with a validation error. The browser only ever opens the live stream; everything else is fetched by the server. The demo page is static, so its media address is fixed at build time: the default, a path on the same site, fits any domain.
 
 ## How it renders
 
