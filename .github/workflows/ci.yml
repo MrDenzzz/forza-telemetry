@@ -67,3 +67,57 @@ jobs:
           pnpm exec commitlint --verbose
           --from ${{ github.event.pull_request.base.sha }}
           --to ${{ github.event.pull_request.head.sha }}
+
+  images:
+    name: Docker images
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Builds on every change; publishes to GitHub Container Registry from main only.
+    permissions:
+      contents: read
+      packages: write
+    env:
+      PUBLISH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      REGISTRY: ghcr.io/mrdenzzz/forza-telemetry
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - if: env.PUBLISH == 'true'
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: API
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          target: api
+          build-args: NEXT_PUBLIC_API_URL=${{ vars.PUBLIC_API_URL || 'https://forza-api.mrdenzzz.ru' }}
+          push: ${{ env.PUBLISH == 'true' }}
+          tags: ${{ env.REGISTRY }}-api:latest,${{ env.REGISTRY }}-api:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Migrations
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          target: migrate
+          build-args: NEXT_PUBLIC_API_URL=${{ vars.PUBLIC_API_URL || 'https://forza-api.mrdenzzz.ru' }}
+          push: ${{ env.PUBLISH == 'true' }}
+          tags: ${{ env.REGISTRY }}-migrate:latest,${{ env.REGISTRY }}-migrate:${{ github.sha }}
+          cache-from: type=gha
+
+      - name: Web
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          target: web
+          build-args: NEXT_PUBLIC_API_URL=${{ vars.PUBLIC_API_URL || 'https://forza-api.mrdenzzz.ru' }}
+          push: ${{ env.PUBLISH == 'true' }}
+          tags: ${{ env.REGISTRY }}-web:latest,${{ env.REGISTRY }}-web:${{ github.sha }}
+          cache-from: type=gha

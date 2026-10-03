@@ -1,0 +1,22 @@
+# Rebuilt inside the image
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+**/src/generated
+**/*.tsbuildinfo
+coverage
+
+# Never sent to the daemon
+.git
+**/.env
+**/.env.*
+!**/.env.example
+**/.pglite
+recordings
+**/*.log
+
+# Native and Expo output of the mobile app, which the images do not build
+apps/mobile/.expo
+apps/mobile/android
+apps/mobile/ios

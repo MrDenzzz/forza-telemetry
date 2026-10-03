@@ -1,0 +1,79 @@
+# The hosted demo: the API replays a recorded drive, the web app serves the dashboards and the
+# history, Postgres keeps the history. Services listen on localhost only; a reverse proxy on the
+# host (nginx, see docs/deploy.md) gives them their domains and TLS.
+#
+#   cp .env.example .env    # set POSTGRES_PASSWORD, and the public URLs for a server
+#   docker compose up --build        # build the images here
+#   docker compose pull && docker compose up -d   # or run the images CI publishes
+
+name: forza-telemetry
+
+x-build: &build
+  context: .
+  args:
+    NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:4000}
+
+x-database-url: &database-url postgresql://forza:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/forza
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: forza
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: forza
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U forza -d forza']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  migrate:
+    image: ghcr.io/mrdenzzz/forza-telemetry-migrate:${IMAGE_TAG:-latest}
+    build:
+      <<: *build
+      target: migrate
+    environment:
+      DATABASE_URL: *database-url
+      IMPORT_FILE: /demo/drive.ftr.gz
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: 'no'
+
+  api:
+    image: ghcr.io/mrdenzzz/forza-telemetry-api:${IMAGE_TAG:-latest}
+    build:
+      <<: *build
+      target: api
+    environment:
+      DATABASE_URL: *database-url
+      TELEMETRY_SOURCE: replay
+      REPLAY_FILE: /demo/drive.ftr.gz
+      RECORD_SESSIONS: 'false'
+    ports:
+      - 127.0.0.1:${API_PORT:-4000}:4000
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/mrdenzzz/forza-telemetry-web:${IMAGE_TAG:-latest}
+    build:
+      <<: *build
+      target: web
+    environment:
+      API_URL: http://api:4000
+    ports:
+      - 127.0.0.1:${WEB_PORT:-3000}:3000
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres:
