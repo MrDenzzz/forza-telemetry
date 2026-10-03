@@ -13,7 +13,7 @@
   grid-template-areas:
     'speed inputs gforce'
     'charts charts tires'
-    'race race engine';
+    'race route engine';
   gap: var(--gap);
   transition: opacity 200ms ease;
 }
@@ -46,6 +46,10 @@
   grid-area: race;
 }
 
+.route {
+  grid-area: route;
+}
+
 .engine {
   grid-area: engine;
 }
@@ -69,6 +73,7 @@
       'tires'
       'charts'
       'race'
+      'route'
       'engine';
   }
 }

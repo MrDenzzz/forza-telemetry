@@ -1,5 +1,7 @@
 import type { LapTrace } from '@ft/contracts';
 
+import { fitPoints, type Projection } from '@/ui/fit-points';
+
 /**
  * Lap traces are sampled at the same points along the route (see ADR 0005), so laps of one
  * route compare index by index. These helpers work on that common index.
@@ -49,30 +51,23 @@ export interface TrackProjection {
   /** SVG path data for each lap, in a `width` × `height` box. */
   readonly paths: string[];
   /** Maps a world position to the box. */
-  readonly project: (x: number, z: number) => readonly [number, number];
+  readonly project: Projection;
 }
 
-/**
- * Fits the laps' world positions into a box, keeping proportions. The game does not document
- * its world axes; X is drawn to the right and Z up the page.
- */
+/** The laps' paths fitted into a box, see `fitPoints`. */
 export function projectTrack(
   laps: readonly { readonly x: readonly number[]; readonly z: readonly number[] }[],
   width: number,
   height: number,
   padding = 8,
 ): TrackProjection {
-  const xs = laps.flatMap((lap) => lap.x);
-  const zs = laps.flatMap((lap) => lap.z);
-  const minX = Math.min(...xs);
-  const maxZ = Math.max(...zs);
-  const spanX = Math.max(...xs) - minX || 1;
-  const spanZ = maxZ - Math.min(...zs) || 1;
-  const scale = Math.min((width - 2 * padding) / spanX, (height - 2 * padding) / spanZ);
-  const offsetX = (width - spanX * scale) / 2;
-  const offsetY = (height - spanZ * scale) / 2;
-  const project = (x: number, z: number) =>
-    [offsetX + (x - minX) * scale, offsetY + (maxZ - z) * scale] as const;
+  const project = fitPoints(
+    laps.flatMap((lap) => lap.x),
+    laps.flatMap((lap) => lap.z),
+    width,
+    height,
+    padding,
+  );
 
   const paths = laps.map((lap) =>
     lap.x

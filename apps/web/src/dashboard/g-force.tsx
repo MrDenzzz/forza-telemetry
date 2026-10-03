@@ -8,16 +8,17 @@ import { Panel } from './panel';
 import { useFrameDrawing } from './use-frame-drawing';
 
 const SIZE = 220;
-/** About one second of history at 30 Hz. */
-const TRAIL_FRAMES = 30;
+const TRAIL_SECONDS = 1.5;
+/** Enough frames for the trail at the stream's highest rate. */
+const TRAIL_MAX_FRAMES = 90;
 
 function paletteOf(element: HTMLElement): FrictionCirclePalette {
   const style = getComputedStyle(element);
   const color = (name: string) => style.getPropertyValue(name).trim();
   return {
     grid: color('--color-panel-border'),
-    trail: color('--color-muted'),
-    dot: color('--color-accent'),
+    trail: color('--color-accent'),
+    dot: color('--color-text'),
     text: color('--color-muted'),
   };
 }
@@ -37,7 +38,9 @@ export function GForce() {
       canvas.height = SIZE * ratio;
     }
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
-    const trail = store.history.recent(TRAIL_FRAMES).map((frame) => frame.gForce);
+    const frames = store.history.recent(TRAIL_MAX_FRAMES);
+    const cutoff = (frames.at(-1)?.receivedAt ?? 0) - TRAIL_SECONDS * 1000;
+    const trail = frames.filter((frame) => frame.receivedAt >= cutoff).map((frame) => frame.gForce);
     drawFrictionCircle(context, SIZE, trail, paletteOf(canvas));
   });
 
@@ -49,7 +52,7 @@ export function GForce() {
         width={SIZE}
         height={SIZE}
         role="img"
-        aria-label="Lateral and longitudinal acceleration over the last second"
+        aria-label={`Lateral and longitudinal acceleration over the last ${String(TRAIL_SECONDS)} seconds`}
       />
     </Panel>
   );

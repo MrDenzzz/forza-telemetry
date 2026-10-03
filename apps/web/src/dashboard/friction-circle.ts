@@ -44,16 +44,21 @@ export function drawFrictionCircle(
   }
 
   context.strokeStyle = palette.trail;
-  context.lineWidth = 2;
-  context.beginPath();
-  points.forEach(({ x, y }, index) => {
-    if (index === 0) {
-      context.moveTo(x, y);
-    } else {
-      context.lineTo(x, y);
+  context.lineWidth = 3;
+  context.lineCap = 'round';
+  // Older samples fade out, so the trail shows where the load is heading.
+  for (let index = 1; index < points.length; index += 1) {
+    const from = points[index - 1];
+    const to = points[index];
+    if (from && to) {
+      context.globalAlpha = index / points.length;
+      context.beginPath();
+      context.moveTo(from.x, from.y);
+      context.lineTo(to.x, to.y);
+      context.stroke();
     }
-  });
-  context.stroke();
+  }
+  context.globalAlpha = 1;
 
   context.fillStyle = palette.dot;
   context.beginPath();

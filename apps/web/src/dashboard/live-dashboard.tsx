@@ -10,6 +10,7 @@ import { GForce } from './g-force';
 import { Inputs } from './inputs';
 import styles from './live-dashboard.module.css';
 import { Race } from './race';
+import { RouteMap } from './route-map';
 import { Speedometer } from './speedometer';
 import { StatusBar } from './status-bar';
 import { Tires } from './tires';
@@ -52,6 +53,9 @@ export function LiveDashboard({ liveUrl }: { liveUrl: string }) {
           </div>
           <div className={styles.race}>
             <Race />
+          </div>
+          <div className={styles.route}>
+            <RouteMap />
           </div>
           <div className={styles.engine}>
             <Engine />
