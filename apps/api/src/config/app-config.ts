@@ -15,6 +15,9 @@ const environmentSchema = z
         message: `Ports ${RESERVED_PORTS.first}-${RESERVED_PORTS.last} are used by the game itself`,
       })
       .default(DEFAULT_TELEMETRY_PORT),
+    TELEMETRY_SOURCE: z.enum(['udp', 'replay']).default('udp'),
+    REPLAY_FILE: z.string().optional(),
+    RECORD_SESSIONS: flag.optional(),
     LIVE_RATE_HZ: z.coerce.number().min(1).max(60).default(30),
     TELEMETRY_TIMEOUT_MS: z.coerce.number().int().min(100).default(2000),
     DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/, error: 'Expected a postgresql:// URL' }),
@@ -24,12 +27,28 @@ const environmentSchema = z
       .default('info'),
     LOG_PRETTY: flag.optional(),
   })
+  .superRefine((env, context) => {
+    if (env.TELEMETRY_SOURCE === 'replay' && env.REPLAY_FILE === undefined) {
+      context.addIssue({
+        code: 'custom',
+        path: ['REPLAY_FILE'],
+        message: 'Required when TELEMETRY_SOURCE is replay',
+      });
+    }
+  })
   .transform((env) => ({
     environment: env.NODE_ENV,
     http: { host: env.HTTP_HOST, port: env.HTTP_PORT },
     udp: { host: env.UDP_HOST, port: env.UDP_PORT },
     live: { rateHz: env.LIVE_RATE_HZ },
-    telemetry: { timeoutMs: env.TELEMETRY_TIMEOUT_MS },
+    telemetry: {
+      timeoutMs: env.TELEMETRY_TIMEOUT_MS,
+      source:
+        env.TELEMETRY_SOURCE === 'replay'
+          ? { kind: 'recording' as const, file: env.REPLAY_FILE ?? '' }
+          : { kind: 'game' as const },
+    },
+    sessions: { record: env.RECORD_SESSIONS ?? true },
     database: { url: env.DATABASE_URL, poolSize: env.DATABASE_POOL_SIZE },
     log: { level: env.LOG_LEVEL, pretty: env.LOG_PRETTY ?? env.NODE_ENV === 'development' },
   }));

@@ -1,4 +1,4 @@
-import type { TelemetryState } from '@ft/contracts';
+import type { LiveSource, TelemetryState } from '@ft/contracts';
 import { decodePacket, type DecodeError } from '@ft/telemetry-protocol';
 import { Inject, Injectable, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -20,6 +20,7 @@ import { toTelemetryState, type TelemetrySample } from './telemetry-state.ts';
 import { TELEMETRY_SOURCE, type TelemetrySource } from './telemetry-source.ts';
 
 export interface TelemetrySnapshot {
+  readonly source: LiveSource;
   readonly state: TelemetryState;
   readonly packets: number;
   readonly invalidPackets: number;
@@ -47,7 +48,7 @@ export class TelemetryService implements OnModuleInit, OnModuleDestroy {
   #lastPacketAt: number | null = null;
 
   constructor(
-    @Inject(TELEMETRY_SOURCE) source: TelemetrySource,
+    @Inject(TELEMETRY_SOURCE) private readonly source: TelemetrySource,
     @Inject(APP_CONFIG) private readonly config: AppConfig,
     @InjectPinoLogger(TelemetryService.name) private readonly logger: PinoLogger,
   ) {
@@ -71,7 +72,12 @@ export class TelemetryService implements OnModuleInit, OnModuleDestroy {
     this.state$ = this.#state.asObservable();
   }
 
-  onModuleInit(): void {
+  /** Whether telemetry comes from the game or from a replayed recording. */
+  get sourceKind(): LiveSource {
+    return this.source.kind;
+  }
+
+  async onModuleInit(): Promise<void> {
     this.#invalid$
       .pipe(
         tap(() => (this.#invalidPackets += 1)),
@@ -91,10 +97,14 @@ export class TelemetryService implements OnModuleInit, OnModuleDestroy {
         this.logger.info({ state }, 'Telemetry state changed');
         this.#state.next(state);
       });
+
+    // Subscribed first, so that nothing the source emits right away is lost.
+    await this.source.start();
   }
 
   snapshot(): TelemetrySnapshot {
     return {
+      source: this.source.kind,
       state: this.#state.value,
       packets: this.#packets,
       invalidPackets: this.#invalidPackets,

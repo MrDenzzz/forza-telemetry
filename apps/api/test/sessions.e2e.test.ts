@@ -45,7 +45,11 @@ class ManualClock implements Clock {
  * the pauses the tracker relies on.
  */
 class RecordingSource implements TelemetrySource {
+  readonly kind = 'game';
   readonly datagrams$ = new Subject<Datagram>();
+  start(): Promise<void> {
+    return Promise.resolve();
+  }
 }
 
 async function poll<T>(read: () => Promise<T>, done: (value: T) => boolean): Promise<T> {

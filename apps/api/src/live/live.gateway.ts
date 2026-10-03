@@ -95,6 +95,7 @@ export class LiveGateway implements OnGatewayInit, OnGatewayConnection, OnModule
         type: 'hello',
         protocolVersion: LIVE_PROTOCOL_VERSION,
         rateHz: this.config.live.rateHz,
+        source: this.telemetry.sourceKind,
         state: this.#status.state,
       }),
     );

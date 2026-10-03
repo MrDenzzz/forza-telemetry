@@ -5,6 +5,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { interval, map, merge, type Subscription } from 'rxjs';
 
 import { CLOCK, type Clock } from '../clock.ts';
+import { APP_CONFIG, type AppConfig } from '../config/app-config.ts';
 import { TelemetryService } from '../telemetry/telemetry.service.ts';
 
 import { SessionTracker, type SessionEvent } from './domain/session-tracker.ts';
@@ -14,8 +15,9 @@ import { SessionRepository } from './session-repository.ts';
 const TICK_INTERVAL_MS = 1000;
 
 /**
- * Feeds the telemetry stream to the session tracker and stores what it detects. Events are
- * written one at a time, in order; a failed write is logged and the next one still runs.
+ * Feeds the telemetry stream to the session tracker and stores what it detects, unless
+ * RECORD_SESSIONS is off. Events are written one at a time, in order; a failed write is logged
+ * and the next one still runs.
  */
 @Injectable()
 export class SessionRecorder implements OnModuleInit, OnModuleDestroy {
@@ -27,10 +29,15 @@ export class SessionRecorder implements OnModuleInit, OnModuleDestroy {
     private readonly telemetry: TelemetryService,
     private readonly repository: SessionRepository,
     @Inject(CLOCK) private readonly clock: Clock,
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
     @InjectPinoLogger(SessionRecorder.name) private readonly logger: PinoLogger,
   ) {}
 
   async onModuleInit(): Promise<void> {
+    // The hosted demo replays one recording in a loop; recording it would repeat it forever.
+    if (!this.config.sessions.record) {
+      return;
+    }
     const interrupted = await this.repository.closeInterrupted();
     if (interrupted > 0) {
       this.logger.warn({ sessions: interrupted }, 'Closed sessions left open by an earlier run');

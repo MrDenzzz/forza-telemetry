@@ -15,18 +15,21 @@ pnpm replay <recording> --loop    # in another terminal, if the game is not runn
 
 Environment variables are validated once at startup; an invalid value stops the process with a message naming the variable. Only `DATABASE_URL` is required, see [`.env.example`](.env.example).
 
-| Variable               | Default        | Meaning                                                                      |
-| ---------------------- | -------------- | ---------------------------------------------------------------------------- |
-| `HTTP_HOST`            | `0.0.0.0`      | HTTP and WebSocket address; all interfaces so a phone on the LAN can connect |
-| `HTTP_PORT`            | `4000`         | HTTP and WebSocket port                                                      |
-| `UDP_HOST`             | `127.0.0.1`    | Telemetry address; `0.0.0.0` for a game on another machine or an Xbox        |
-| `UDP_PORT`             | `9876`         | Telemetry port; 5200–5300 are refused, the game uses them                    |
-| `LIVE_RATE_HZ`         | `30`           | Frames per second sent to live clients                                       |
-| `TELEMETRY_TIMEOUT_MS` | `2000`         | Silence after which the game counts as offline                               |
-| `DATABASE_URL`         | required       | `postgresql://` URL of the history database                                  |
-| `DATABASE_POOL_SIZE`   | `10`           | Database connections; 1 for PGlite, which runs one session at a time         |
-| `LOG_LEVEL`            | `info`         | `fatal` … `trace`, or `silent`                                               |
-| `LOG_PRETTY`           | in development | Human-readable logs instead of JSON                                          |
+| Variable               | Default        | Meaning                                                                                       |
+| ---------------------- | -------------- | --------------------------------------------------------------------------------------------- |
+| `HTTP_HOST`            | `0.0.0.0`      | HTTP and WebSocket address; all interfaces so a phone on the LAN can connect                  |
+| `HTTP_PORT`            | `4000`         | HTTP and WebSocket port                                                                       |
+| `UDP_HOST`             | `127.0.0.1`    | Telemetry address; `0.0.0.0` for a game on another machine or an Xbox                         |
+| `UDP_PORT`             | `9876`         | Telemetry port; 5200–5300 are refused, the game uses them                                     |
+| `TELEMETRY_SOURCE`     | `udp`          | `udp` listens for the game; `replay` plays `REPLAY_FILE` in a loop instead, for a hosted demo |
+| `REPLAY_FILE`          | —              | Recording to replay (`pnpm record` makes them)                                                |
+| `RECORD_SESSIONS`      | `true`         | Store sessions and laps; off for a replay, which would repeat one forever                     |
+| `LIVE_RATE_HZ`         | `30`           | Frames per second sent to live clients                                                        |
+| `TELEMETRY_TIMEOUT_MS` | `2000`         | Silence after which the game counts as offline                                                |
+| `DATABASE_URL`         | required       | `postgresql://` URL of the history database                                                   |
+| `DATABASE_POOL_SIZE`   | `10`           | Database connections; 1 for PGlite, which runs one session at a time                          |
+| `LOG_LEVEL`            | `info`         | `fatal` … `trace`, or `silent`                                                                |
+| `LOG_PRETTY`           | in development | Human-readable logs instead of JSON                                                           |
 
 ### Where the game runs
 

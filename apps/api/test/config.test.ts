@@ -11,7 +11,8 @@ describe('loadConfig', () => {
       http: { host: '0.0.0.0', port: 4000 },
       udp: { host: '127.0.0.1', port: 9876 },
       live: { rateHz: 30 },
-      telemetry: { timeoutMs: 2000 },
+      telemetry: { timeoutMs: 2000, source: { kind: 'game' } },
+      sessions: { record: true },
       database: { url: DATABASE_URL, poolSize: 10 },
       log: { level: 'info', pretty: true },
     });
@@ -57,6 +58,24 @@ describe('loadConfig', () => {
   ])('rejects %o', (env, message) => {
     expect(() => loadConfig({ DATABASE_URL, ...env })).toThrow(ConfigError);
     expect(() => loadConfig({ DATABASE_URL, ...env })).toThrow(message);
+  });
+
+  it('replays a recording instead of listening for the game', () => {
+    expect(
+      loadConfig({
+        DATABASE_URL,
+        TELEMETRY_SOURCE: 'replay',
+        REPLAY_FILE: '/demo/race.ftr.gz',
+        RECORD_SESSIONS: 'false',
+      }),
+    ).toMatchObject({
+      telemetry: { source: { kind: 'recording', file: '/demo/race.ftr.gz' } },
+      sessions: { record: false },
+    });
+  });
+
+  it('needs the file to replay', () => {
+    expect(() => loadConfig({ DATABASE_URL, TELEMETRY_SOURCE: 'replay' })).toThrow(/REPLAY_FILE/);
   });
 
   it('requires the database', () => {

@@ -1,7 +1,7 @@
 import { createSocket, type Socket } from 'node:dgram';
 import type { AddressInfo } from 'node:net';
 
-import { Inject, Injectable, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, type OnModuleDestroy } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Subject } from 'rxjs';
 
@@ -9,8 +9,10 @@ import { APP_CONFIG, type AppConfig } from '../config/app-config.ts';
 
 import type { Datagram, TelemetrySource } from './telemetry-source.ts';
 
+/** Telemetry from the game: its Data Out datagrams on a UDP port. */
 @Injectable()
-export class UdpTelemetrySource implements TelemetrySource, OnModuleInit, OnModuleDestroy {
+export class UdpTelemetrySource implements TelemetrySource, OnModuleDestroy {
+  readonly kind = 'game';
   readonly #datagrams = new Subject<Datagram>();
   readonly datagrams$ = this.#datagrams.asObservable();
   #socket: Socket | undefined;
@@ -20,7 +22,7 @@ export class UdpTelemetrySource implements TelemetrySource, OnModuleInit, OnModu
     @InjectPinoLogger(UdpTelemetrySource.name) private readonly logger: PinoLogger,
   ) {}
 
-  async onModuleInit(): Promise<void> {
+  async start(): Promise<void> {
     const socket = createSocket('udp4');
     socket.on('message', (payload) => {
       this.#datagrams.next({ payload, receivedAt: Date.now() });

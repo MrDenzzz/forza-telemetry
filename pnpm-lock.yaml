@@ -223,6 +223,9 @@ importers:
       '@ft/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
+      '@ft/recording':
+        specifier: workspace:*
+        version: link:../../packages/recording
       '@ft/telemetry-protocol':
         specifier: workspace:*
         version: link:../../packages/telemetry-protocol
@@ -278,9 +281,6 @@ importers:
       '@ft/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@ft/recording':
-        specifier: workspace:*
-        version: link:../../packages/recording
       '@ft/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig

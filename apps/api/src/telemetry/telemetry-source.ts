@@ -1,3 +1,4 @@
+import type { LiveSource } from '@ft/contracts';
 import type { Observable } from 'rxjs';
 
 export interface Datagram {
@@ -7,11 +8,14 @@ export interface Datagram {
 }
 
 /**
- * Where raw telemetry comes from. The UDP socket is the only source today; the demo mode
- * plugs a recording in behind the same interface.
+ * Where raw telemetry comes from: the game over UDP, or a recording replayed in a loop for the
+ * hosted demo, which receives no telemetry from outside.
  */
 export interface TelemetrySource {
+  readonly kind: LiveSource;
   readonly datagrams$: Observable<Datagram>;
+  /** Starts the source; rejects when it cannot, e.g. a taken port or an unreadable recording. */
+  start(): Promise<void>;
 }
 
 export const TELEMETRY_SOURCE = Symbol('TELEMETRY_SOURCE');

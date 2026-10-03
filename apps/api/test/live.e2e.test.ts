@@ -133,6 +133,7 @@ describe('live telemetry, end to end', () => {
       type: 'hello',
       protocolVersion: LIVE_PROTOCOL_VERSION,
       rateHz: RATE_HZ,
+      source: 'game',
       state: 'offline',
     });
   });
