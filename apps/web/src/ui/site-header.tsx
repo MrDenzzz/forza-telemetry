@@ -6,10 +6,12 @@ import { SiteNav } from './site-nav';
 export function SiteHeader() {
   return (
     <header className={styles.header}>
-      <Link href="/" className={styles.brand}>
-        Forza Telemetry
-      </Link>
-      <SiteNav />
+      <div className={styles.bar}>
+        <Link href="/" className={styles.brand}>
+          Forza Telemetry
+        </Link>
+        <SiteNav />
+      </div>
     </header>
   );
 }

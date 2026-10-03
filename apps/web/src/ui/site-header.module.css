@@ -1,10 +1,21 @@
+/* Stays on top while the page scrolls, translucent: on the demo page the video runs under it. */
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: var(--header-height);
+  background: rgb(11 13 16 / 70%);
+  backdrop-filter: blur(8px);
+}
+
+.bar {
   display: flex;
   align-items: center;
   gap: 24px;
   max-width: 1400px;
+  height: 100%;
   margin: 0 auto;
-  padding: 16px 16px 0;
+  padding: 0 16px;
 }
 
 .brand {
