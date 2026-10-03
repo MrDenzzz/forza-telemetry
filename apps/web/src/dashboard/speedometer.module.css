@@ -1,5 +1,7 @@
+/* The figures are sized by the panel's width, not the window's, so that they always fit in it. */
 .panel {
   justify-content: space-between;
+  container-type: inline-size;
 }
 
 .readout {
@@ -16,7 +18,7 @@
 }
 
 .speed {
-  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  font-size: clamp(2.5rem, (100cqi - 56px) / 2.7, 5.5rem);
   font-weight: 700;
   line-height: 1;
   color: var(--color-speed);
@@ -28,7 +30,7 @@
 
 .gear {
   min-width: 2ch;
-  font-size: clamp(3rem, 7vw, 4.5rem);
+  font-size: clamp(2rem, (100cqi - 56px) / 3.3, 4.5rem);
   font-weight: 700;
   line-height: 1;
   text-align: right;
