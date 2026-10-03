@@ -78,12 +78,17 @@ export const liveFrameSchema = z.object({
  */
 export const telemetryStateSchema = z.enum(['offline', 'idle', 'driving']);
 
+/** `game`: telemetry from the game as it is driven. `recording`: a recording the API replays. */
+export const liveSourceSchema = z.enum(['game', 'recording']);
+
 export const liveHelloMessageSchema = z.object({
   type: z.literal('hello'),
   protocolVersion: z.literal(LIVE_PROTOCOL_VERSION),
   /** Maximum frames per second the server sends. */
   rateHz: z.number().positive(),
   state: telemetryStateSchema,
+  // Servers from before this field stream the game.
+  source: liveSourceSchema.default('game'),
 });
 
 export const liveStatusMessageSchema = z.object({
@@ -104,6 +109,7 @@ export const liveServerMessageSchema = z.discriminatedUnion('type', [
 
 export type LiveFrame = z.infer<typeof liveFrameSchema>;
 export type TelemetryState = z.infer<typeof telemetryStateSchema>;
+export type LiveSource = z.infer<typeof liveSourceSchema>;
 export type LiveHelloMessage = z.infer<typeof liveHelloMessageSchema>;
 export type LiveStatusMessage = z.infer<typeof liveStatusMessageSchema>;
 export type LiveFrameMessage = z.infer<typeof liveFrameMessageSchema>;

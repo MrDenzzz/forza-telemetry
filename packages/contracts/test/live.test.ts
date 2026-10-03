@@ -64,7 +64,13 @@ describe('liveFrameSchema', () => {
 describe('parseLiveServerMessage', () => {
   it('parses each message type', () => {
     const messages = [
-      { type: 'hello', protocolVersion: LIVE_PROTOCOL_VERSION, rateHz: 30, state: 'idle' },
+      {
+        type: 'hello',
+        protocolVersion: LIVE_PROTOCOL_VERSION,
+        rateHz: 30,
+        state: 'idle',
+        source: 'recording',
+      },
       { type: 'status', state: 'driving' },
       { type: 'frame', frame: FRAME },
     ];
@@ -72,6 +78,20 @@ describe('parseLiveServerMessage', () => {
     for (const message of messages) {
       expect(parseLiveServerMessage(JSON.stringify(message))).toEqual({ ok: true, value: message });
     }
+  });
+
+  it('takes a hello without a source, from an older server, as streaming the game', () => {
+    const hello = {
+      type: 'hello',
+      protocolVersion: LIVE_PROTOCOL_VERSION,
+      rateHz: 30,
+      state: 'idle',
+    };
+
+    expect(parseLiveServerMessage(JSON.stringify(hello))).toEqual({
+      ok: true,
+      value: { ...hello, source: 'game' },
+    });
   });
 
   it('rejects a hello from another protocol version', () => {

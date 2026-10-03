@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
-import { telemetryStateSchema } from './live.ts';
+import { liveSourceSchema, telemetryStateSchema } from './live.ts';
 
 export const healthResponseSchema = z.object({
   status: z.literal('ok'),
   uptimeSeconds: z.number().nonnegative(),
   telemetry: z.object({
+    source: liveSourceSchema,
     state: telemetryStateSchema,
     packets: z.int().nonnegative(),
     invalidPackets: z.int().nonnegative(),
