@@ -2,10 +2,11 @@
 
 **English** · [Русский](README.ru.md)
 
-Next.js app with two parts:
+Next.js app with three parts:
 
-- **Live** (`/`): speed and gear, revs, pedals and steering, g-force, tyre temperatures and grip, race position and lap times, and 30-second charts of speed, revs, throttle and brake.
+- **Live** (`/`): speed and gear, revs, pedals and steering, g-force, tyre temperatures and grip, race position and lap times, a map of the route, and 30-second charts of speed, revs, throttle and brake. When the API replays a recording, the map shows the whole course.
 - **History** (`/sessions`): recorded sessions with their statistics and laps, and a comparison of any two laps (`/compare?laps=a,b`): time gap, speed, throttle, brake and gear along the lap, with a track map that follows the cursor.
+- **Demo** (`/demo`): the gameplay video of a race with the dashboard's widgets drawn over it. The video is the clock: a telemetry track timed to it feeds the same store and widgets as the live stream, so pausing, seeking and looping keep them in step.
 
 ```sh
 pnpm dev    # from the repository root: API on :4000 and dashboard on http://localhost:3000
